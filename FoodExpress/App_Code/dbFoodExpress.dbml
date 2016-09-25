@@ -1,0 +1,260 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="FoodExpress" Class="dbFoodExpressDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=THANHTRAN;Initial Catalog=FoodExpress;Persist Security Info=True;User ID=sa" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="FoodExpressConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.City" Member="Cities">
+    <Type Name="City">
+      <Column Name="IDCity" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="NameCity" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="City_Res_Restaurant" Member="Res_Restaurants" ThisKey="IDCity" OtherKey="IDCity" Type="Res_Restaurant" />
+    </Type>
+  </Table>
+  <Table Name="dbo.WarehouseImport" Member="WarehouseImports">
+    <Type Name="WarehouseImport">
+      <Column Name="IDImport" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Title" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="ImportDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="TotalPrice" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="WarehouseImport_ImportDetail" Member="ImportDetails" ThisKey="IDImport" OtherKey="IDImport" Type="ImportDetail" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Customer" Member="Customers">
+    <Type Name="Customer">
+      <Column Name="IDCustomer" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="NameCustomer" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="FirstName" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="UserName" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="PasswordCustomer" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="PasswordSalt" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="CustomerAddress" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
+      <Column Name="DateOfBirth" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Phone" Type="System.String" DbType="NVarChar(15)" CanBeNull="true" />
+      <Column Name="Fax" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="IDRole" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="Customer_Order" Member="Orders" ThisKey="IDCustomer" OtherKey="IDCustomer" Type="Order" />
+      <Association Name="CustomerRole_Customer" Member="CustomerRole" ThisKey="IDRole" OtherKey="IDRole" Type="CustomerRole" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CustomerRole" Member="CustomerRoles">
+    <Type Name="CustomerRole">
+      <Column Name="IDRole" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="NameRole" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="CustomerRole_Customer" Member="Customers" ThisKey="IDRole" OtherKey="IDRole" Type="Customer" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Dish" Member="Dishes">
+    <Type Name="Dish">
+      <Column Name="IDDish" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="NameDish" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="IDDishCate" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Price" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="Dish_Dish_Attribute" Member="Dish_Attributes" ThisKey="IDDish" OtherKey="IDDish" Type="Dish_Attribute" />
+      <Association Name="Dish_Method" Member="Methods" ThisKey="IDDish" OtherKey="IDDish" Type="Method" />
+      <Association Name="Dish_OrderDetail" Member="OrderDetails" ThisKey="IDDish" OtherKey="IDDish" Type="OrderDetail" />
+      <Association Name="Dish_Category_Dish" Member="Dish_Category" ThisKey="IDDishCate" OtherKey="IDDishCate" Type="Dish_Category" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Dish_Attribute" Member="Dish_Attributes">
+    <Type Name="Dish_Attribute">
+      <Column Name="IDAttribute" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="NameAttribute" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="Price" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="IDDish" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="Dish_Dish_Attribute" Member="Dish" ThisKey="IDDish" OtherKey="IDDish" Type="Dish" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Dish_Category" Member="Dish_Categories">
+    <Type Name="Dish_Category">
+      <Column Name="IDDishCate" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="NameDishCate" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="IDRes" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="Dish_Category_Dish" Member="Dishes" ThisKey="IDDishCate" OtherKey="IDDishCate" Type="Dish" />
+      <Association Name="Res_Restaurant_Dish_Category" Member="Res_Restaurant" ThisKey="IDRes" OtherKey="IDRes" Type="Res_Restaurant" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ExportDetail" Member="ExportDetails">
+    <Type Name="ExportDetail">
+      <Column Name="IDEDetail" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="IDExport" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IDIngredient" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Quantity" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Unit" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TotalPrice" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="Ingredient_ExportDetail" Member="Ingredient" ThisKey="IDIngredient" OtherKey="IDIngredient" Type="Ingredient" IsForeignKey="true" />
+      <Association Name="WarehouseExport_ExportDetail" Member="WarehouseExport" ThisKey="IDExport" OtherKey="IDExport" Type="WarehouseExport" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ImportDetail" Member="ImportDetails">
+    <Type Name="ImportDetail">
+      <Column Name="IDIDetail" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="IDImport" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IDIngredient" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Quantity" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Unit" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TotalPrice" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="WarehouseImport_ImportDetail" Member="WarehouseImport" ThisKey="IDImport" OtherKey="IDImport" Type="WarehouseImport" IsForeignKey="true" />
+      <Association Name="Ingredient_ImportDetail" Member="Ingredient" ThisKey="IDIngredient" OtherKey="IDIngredient" Type="Ingredient" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Ingredient" Member="Ingredients">
+    <Type Name="Ingredient">
+      <Column Name="IDIngredient" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="NameIngredient" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="IDRes" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="Ingredient_ExportDetail" Member="ExportDetails" ThisKey="IDIngredient" OtherKey="IDIngredient" Type="ExportDetail" />
+      <Association Name="Ingredient_ImportDetail" Member="ImportDetails" ThisKey="IDIngredient" OtherKey="IDIngredient" Type="ImportDetail" />
+      <Association Name="Ingredient_MethodDetail" Member="MethodDetails" ThisKey="IDIngredient" OtherKey="IDIngredient" Type="MethodDetail" />
+      <Association Name="Res_Restaurant_Ingredient" Member="Res_Restaurant" ThisKey="IDRes" OtherKey="IDRes" Type="Res_Restaurant" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Method" Member="Methods">
+    <Type Name="Method">
+      <Column Name="IDMethod" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="NameMethod" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="FinishProductNo" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IDDish" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="Method_MethodDetail" Member="MethodDetails" ThisKey="IDMethod" OtherKey="IDMethod" Type="MethodDetail" />
+      <Association Name="Dish_Method" Member="Dish" ThisKey="IDDish" OtherKey="IDDish" Type="Dish" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MethodDetail" Member="MethodDetails">
+    <Type Name="MethodDetail">
+      <Column Name="IDMDetail" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="IDMethod" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IDIngredient" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Quantity" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Unit" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="Ingredient_MethodDetail" Member="Ingredient" ThisKey="IDIngredient" OtherKey="IDIngredient" Type="Ingredient" IsForeignKey="true" />
+      <Association Name="Method_MethodDetail" Member="Method" ThisKey="IDMethod" OtherKey="IDMethod" Type="Method" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.[Order]" Member="Orders">
+    <Type Name="Order">
+      <Column Name="IDOrder" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="IDRes" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="OrderPrice" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="ServiceFee" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="ShippingFee" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="TotalPrice" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="IDCustomer" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="IsPay" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="AddressOrder" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
+      <Association Name="Order_OrderDetail" Member="OrderDetails" ThisKey="IDOrder" OtherKey="IDOrder" Type="OrderDetail" />
+      <Association Name="Customer_Order" Member="Customer" ThisKey="IDCustomer" OtherKey="IDCustomer" Type="Customer" IsForeignKey="true" />
+      <Association Name="Res_Restaurant_Order" Member="Res_Restaurant" ThisKey="IDRes" OtherKey="IDRes" Type="Res_Restaurant" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.OrderDetail" Member="OrderDetails">
+    <Type Name="OrderDetail">
+      <Column Name="IDDetail" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="IDOrder" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IDDish" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AttributeXML" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="Price" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="Quantity" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="Dish_OrderDetail" Member="Dish" ThisKey="IDDish" OtherKey="IDDish" Type="Dish" IsForeignKey="true" />
+      <Association Name="Order_OrderDetail" Member="Order" ThisKey="IDOrder" OtherKey="IDOrder" Type="Order" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Res_Category" Member="Res_Categories">
+    <Type Name="Res_Category">
+      <Column Name="IDCate" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="NameCate" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="Res_Category_Res_Categoty_Mapping" Member="Res_Categoty_Mappings" ThisKey="IDCate" OtherKey="IDCate" Type="Res_Categoty_Mapping" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Res_Categoty_Mapping" Member="Res_Categoty_Mappings">
+    <Type Name="Res_Categoty_Mapping">
+      <Column Name="IDRCM" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="IDRes" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IDCate" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="Res_Category_Res_Categoty_Mapping" Member="Res_Category" ThisKey="IDCate" OtherKey="IDCate" Type="Res_Category" IsForeignKey="true" />
+      <Association Name="Res_Restaurant_Res_Categoty_Mapping" Member="Res_Restaurant" ThisKey="IDRes" OtherKey="IDRes" Type="Res_Restaurant" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Res_Cuisine" Member="Res_Cuisines">
+    <Type Name="Res_Cuisine">
+      <Column Name="IDCuisine" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="NameCuisine" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="Res_Cuisine_Res_Cuisine_Mapping" Member="Res_Cuisine_Mappings" ThisKey="IDCuisine" OtherKey="IDCuisine" Type="Res_Cuisine_Mapping" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Res_Cuisine_Mapping" Member="Res_Cuisine_Mappings">
+    <Type Name="Res_Cuisine_Mapping">
+      <Column Name="IDRCM" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="IDRes" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IDCuisine" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="Res_Cuisine_Res_Cuisine_Mapping" Member="Res_Cuisine" ThisKey="IDCuisine" OtherKey="IDCuisine" Type="Res_Cuisine" IsForeignKey="true" />
+      <Association Name="Res_Restaurant_Res_Cuisine_Mapping" Member="Res_Restaurant" ThisKey="IDRes" OtherKey="IDRes" Type="Res_Restaurant" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Res_Restaurant" Member="Res_Restaurants">
+    <Type Name="Res_Restaurant">
+      <Column Name="IDRes" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="NameRes" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="Summary" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
+      <Column Name="DescriptionRes" Type="System.String" DbType="NVarChar(4000)" CanBeNull="true" />
+      <Column Name="ResAddress" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
+      <Column Name="Phone" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="Website" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
+      <Column Name="Fax" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="IDCity" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="OwnerId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TimeStart" Type="System.TimeSpan" DbType="Time" CanBeNull="true" />
+      <Column Name="TimeEnd" Type="System.TimeSpan" DbType="Time" CanBeNull="true" />
+      <Column Name="TimeBreakStart" Type="System.TimeSpan" DbType="Time" CanBeNull="true" />
+      <Column Name="TimeBreakEnd" Type="System.TimeSpan" DbType="Time" CanBeNull="true" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="ServiceFee" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="Commission" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Association Name="Res_Restaurant_Dish_Category" Member="Dish_Categories" ThisKey="IDRes" OtherKey="IDRes" Type="Dish_Category" />
+      <Association Name="Res_Restaurant_Ingredient" Member="Ingredients" ThisKey="IDRes" OtherKey="IDRes" Type="Ingredient" />
+      <Association Name="Res_Restaurant_Order" Member="Orders" ThisKey="IDRes" OtherKey="IDRes" Type="Order" />
+      <Association Name="Res_Restaurant_Res_Categoty_Mapping" Member="Res_Categoty_Mappings" ThisKey="IDRes" OtherKey="IDRes" Type="Res_Categoty_Mapping" />
+      <Association Name="Res_Restaurant_Res_Cuisine_Mapping" Member="Res_Cuisine_Mappings" ThisKey="IDRes" OtherKey="IDRes" Type="Res_Cuisine_Mapping" />
+      <Association Name="City_Res_Restaurant" Member="City" ThisKey="IDCity" OtherKey="IDCity" Type="City" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.WarehouseExport" Member="WarehouseExports">
+    <Type Name="WarehouseExport">
+      <Column Name="IDExport" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Title" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="ExportDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="TotalPrice" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="WarehouseExport_ExportDetail" Member="ExportDetails" ThisKey="IDExport" OtherKey="IDExport" Type="ExportDetail" />
+    </Type>
+  </Table>
+</Database>
