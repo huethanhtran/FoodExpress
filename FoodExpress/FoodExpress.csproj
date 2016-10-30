@@ -49,6 +49,14 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Linq" />
@@ -118,24 +126,32 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Code\dbFoodExpress.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>dbFoodExpress.dbml</DependentUpon>
-    </Content>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\CityController.cs" />
+    <Compile Include="Controllers\CustomerRoleController.cs" />
     <Compile Include="Controllers\DishController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MethodController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
+    <Compile Include="Controllers\RestaurantCategoryController.cs" />
     <Compile Include="Controllers\RestaurantController.cs" />
+    <Compile Include="Controllers\RestaurantCuisineController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\WareHouseController.cs" />
+    <Compile Include="dbFoodExpress.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dbFoodExpress.dbml</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\City.cs" />
+    <Compile Include="Models\Customer.cs" />
+    <Compile Include="Models\CustomerRole.cs" />
+    <Compile Include="Models\Res_Category.cs" />
+    <Compile Include="Models\Res_Cuisine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -398,13 +414,14 @@
     <Content Include="Content\Admin\css\style.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="App_Code\dbFoodExpress.dbml">
+    <Content Include="dbFoodExpress.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
       <LastGenOutput>dbFoodExpress.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
@@ -432,14 +449,14 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutAdmin.cshtml" />
+    <Content Include="Views\RestaurantCategory\Index.cshtml" />
+    <Content Include="Views\RestaurantCuisine\Index.cshtml" />
+    <Content Include="Views\CustomerRole\Index.cshtml" />
+    <Content Include="Views\City\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
     <Folder Include="Views\Dish\" />
     <Folder Include="Views\Method\" />
     <Folder Include="Views\Order\" />
@@ -459,7 +476,7 @@
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App_Code\dbFoodExpress.dbml.layout">
+    <None Include="dbFoodExpress.dbml.layout">
       <DependentUpon>dbFoodExpress.dbml</DependentUpon>
     </None>
   </ItemGroup>

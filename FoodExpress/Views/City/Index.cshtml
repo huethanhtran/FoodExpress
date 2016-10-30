@@ -1,0 +1,94 @@
+﻿@using PagedList.Mvc
+@model PagedList.IPagedList<FoodExpress.Models.City>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    City city = new City();
+    city.Active = false;
+    if (Session["city"] != null)
+    {
+        city = Session["city"] as City;
+    }
+
+}
+
+<h2>City Management</h2>
+
+
+<form action="@Url.Action("CreateCity" )" method="post">
+    <p style="color:red">@ViewBag.Notice</p>
+    <div class="form-horizontal">
+        <hr />
+        <div class="form-group">
+
+            <div class="control-label col-md-2">
+                <label>Name</label>
+            </div>
+            <div class="col-md-10">
+                <input type="text" name="cityname" id="cityname" value="@city.NameCity" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="control-label col-md-2">
+                <label>Active</label>
+            </div>
+            <div class="col-md-10">
+                <input type="checkbox" name="active" id="active" value="true" checked="@city.Active.Value" />
+            </div>
+
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="button" value="Cancel" onclick="location.href='@Url.Action("Cancel","City")'" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+
+</form>
+<form action="@Url.Action("Index" )" method="get">
+    <div class="m-r-10 input-prepend inside search-form no-boarder">
+        <input name="keyword" type="text" id="keyword" class="no-boarder " value="@ViewBag.CurrentFilter" placeholder="Search City" style="width:500px;">
+        <input name="btnSearch" type="submit" id="btnSearch" class="btn btn-default" style="margin-left:10px; width: 100px;" value="Search">
+    </div>
+</form>
+
+
+<table class="table">
+    <tr>
+        <th>
+
+            Name
+        </th>
+        <th>
+
+            Active
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NameCity)
+            </td>
+            <td>
+
+                @Html.CheckBoxFor(modelItem => item.Active)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.IDCity }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.IDCity })
+            </td>
+        </tr>
+    }
+
+</table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, currentFilter = ViewBag.CurrentFilter }))

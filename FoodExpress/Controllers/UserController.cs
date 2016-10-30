@@ -11,6 +11,7 @@ namespace FoodExpress.Controllers
         // GET: User
         public ActionResult Index()
         {
+           
             return View();
         }
     }

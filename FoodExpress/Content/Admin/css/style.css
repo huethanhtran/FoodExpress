@@ -3472,7 +3472,7 @@ textarea[class*="span"] {
   border-radius: 3px;
 }
 .checkbox input[type=checkbox] {
-  display: none;
+  display: block;
 }
 .checkbox.checkbox-circle label:after {
   border-radius: 99px;
@@ -6904,7 +6904,7 @@ th {
 input[type="checkbox"],
 .table td input[type="radio"],
 input[type="checkbox"] {
-  margin-top: -2px;
+  margin-top: 10px;
 }
 .table td.small-cell,
 .table th.small-cell {

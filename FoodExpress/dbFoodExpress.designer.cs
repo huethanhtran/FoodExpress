@@ -9,7 +9,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FoodExpress.App_Code
+namespace FoodExpress
 {
 	using System.Data.Linq;
 	using System.Data.Linq.Mapping;
