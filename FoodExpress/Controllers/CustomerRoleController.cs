@@ -17,7 +17,7 @@ namespace FoodExpress.Controllers
         // GET: CustomerRole
         public ActionResult Index(string message, string keyword, string currentFilter, int? page)
         {
-            List<Models.CustomerRole> lsRole = _db.CustomerRoles.Select(x=> new Models.CustomerRole { IDRole = x.IDRole, NameRole = x.NameRole, Active = x.Active.Value }).ToList();
+            List<Models.CustomerRole> lsRole = _db.CustomerRoles.Where(x=>x.IDRole != 2 && x.IDRole != 3).Select(x=> new Models.CustomerRole { IDRole = x.IDRole, NameRole = x.NameRole, Active = x.Active.Value }).ToList();
             if (message != null)
             {
                 ViewBag.Notice = message;

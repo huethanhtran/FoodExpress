@@ -689,6 +689,8 @@ namespace FoodExpress
 		
 		private System.Nullable<bool> _Active;
 		
+		private string _Avatar;
+		
 		private EntitySet<Order> _Orders;
 		
 		private EntityRef<CustomerRole> _CustomerRole;
@@ -725,6 +727,8 @@ namespace FoodExpress
     partial void OnCreatedOnChanged();
     partial void OnActiveChanging(System.Nullable<bool> value);
     partial void OnActiveChanged();
+    partial void OnAvatarChanging(string value);
+    partial void OnAvatarChanged();
     #endregion
 		
 		public Customer()
@@ -1014,6 +1018,26 @@ namespace FoodExpress
 					this._Active = value;
 					this.SendPropertyChanged("Active");
 					this.OnActiveChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Avatar", DbType="NVarChar(500)")]
+		public string Avatar
+		{
+			get
+			{
+				return this._Avatar;
+			}
+			set
+			{
+				if ((this._Avatar != value))
+				{
+					this.OnAvatarChanging(value);
+					this.SendPropertyChanging();
+					this._Avatar = value;
+					this.SendPropertyChanged("Avatar");
+					this.OnAvatarChanged();
 				}
 			}
 		}

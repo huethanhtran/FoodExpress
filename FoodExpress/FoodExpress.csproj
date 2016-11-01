@@ -147,6 +147,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\DataHelper.cs" />
     <Compile Include="Models\City.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\CustomerRole.cs" />
@@ -419,6 +420,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\Customer\abc.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="dbFoodExpress.dbml">
@@ -454,6 +456,8 @@
     <Content Include="Views\RestaurantCuisine\Index.cshtml" />
     <Content Include="Views\CustomerRole\Index.cshtml" />
     <Content Include="Views\City\Index.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\User\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -461,7 +465,6 @@
     <Folder Include="Views\Method\" />
     <Folder Include="Views\Order\" />
     <Folder Include="Views\Restaurant\" />
-    <Folder Include="Views\User\" />
     <Folder Include="Views\WareHouse\" />
   </ItemGroup>
   <ItemGroup>

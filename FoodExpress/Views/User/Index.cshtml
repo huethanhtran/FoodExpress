@@ -1,0 +1,91 @@
+﻿@model PagedList.IPagedList<FoodExpress.Models.Customer>
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Customer Management</h2>
+
+<form action="@Url.Action("Index" )" method="get">
+    <div class="m-r-10 input-prepend inside search-form no-boarder">
+        <input name="keyword" type="text" id="keyword" class="no-boarder " value="@ViewBag.CurrentFilter" placeholder="Search Customer" style="width:500px;">
+        <input name="btnSearch" type="submit" id="btnSearch" class="btn btn-default" style="margin-left:10px; width: 100px;" value="Search">
+    </div>
+</form>
+<table class="table">
+    <tr>
+
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().UserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().CustomerAddress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().DateOfBirth)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Active)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomerAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateOfBirth)
+            </td>
+            <td>
+                <input type="checkbox" id="active" name="active" checked="@item.Active" onclick="UnactiveUser(this,@item.IDCustomer)" />
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new { id = item.IDCustomer })
+                @{ if (Session["user"] != null)
+                    {
+                        Customer c = Session["user"] as Customer;
+                        if (c.IDRole == 3)
+                        {
+                            <select name="ddlRole" id="ddlRole" class="form-control" onchange="GrantRoleUser(this, @item.IDCustomer)">
+                                <option value="0">Select Role</option>
+                                <option value="2">Admin</option>
+                                <option value="3">Super Admin</option>
+                            </select>
+                        }
+                    } }
+            </td>
+        </tr>
+                    }
+
+</table>
+<script>
+    function UnactiveUser(item, id) {
+        var data = { userId: id, value: $(item).is(":checked") == true ? true : false }
+        $.post("UnactiveUser", data, function (response) {
+            if (response == "unsuccess") {
+                alert("You can not unactive this customer")
+            }
+        })
+    }
+    function GrantRoleUser(item, id) {
+        var data = { userId: id, value: $(item).val() }
+        $.post("GrantRoleUser", data, function (response) {
+            if (response == "unsuccess") {
+                alert("You can not grant role for this customer")
+            }
+        })
+    }
+</script>
