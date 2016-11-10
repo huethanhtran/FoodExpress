@@ -3445,6 +3445,8 @@ namespace FoodExpress
 		
 		private string _AddressOrder;
 		
+		private System.Nullable<decimal> _ReturnBack;
+		
 		private EntitySet<OrderDetail> _OrderDetails;
 		
 		private EntityRef<Customer> _Customer;
@@ -3479,6 +3481,8 @@ namespace FoodExpress
     partial void OnIsPayChanged();
     partial void OnAddressOrderChanging(string value);
     partial void OnAddressOrderChanged();
+    partial void OnReturnBackChanging(System.Nullable<decimal> value);
+    partial void OnReturnBackChanged();
     #endregion
 		
 		public Order()
@@ -3733,6 +3737,26 @@ namespace FoodExpress
 					this._AddressOrder = value;
 					this.SendPropertyChanged("AddressOrder");
 					this.OnAddressOrderChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReturnBack", DbType="Money")]
+		public System.Nullable<decimal> ReturnBack
+		{
+			get
+			{
+				return this._ReturnBack;
+			}
+			set
+			{
+				if ((this._ReturnBack != value))
+				{
+					this.OnReturnBackChanging(value);
+					this.SendPropertyChanging();
+					this._ReturnBack = value;
+					this.SendPropertyChanged("ReturnBack");
+					this.OnReturnBackChanged();
 				}
 			}
 		}
@@ -4891,6 +4915,8 @@ namespace FoodExpress
 		
 		private System.Nullable<decimal> _Commission;
 		
+		private string _Avatar;
+		
 		private EntitySet<Dish_Category> _Dish_Categories;
 		
 		private EntitySet<Ingredient> _Ingredients;
@@ -4945,6 +4971,8 @@ namespace FoodExpress
     partial void OnServiceFeeChanged();
     partial void OnCommissionChanging(System.Nullable<decimal> value);
     partial void OnCommissionChanged();
+    partial void OnAvatarChanging(string value);
+    partial void OnAvatarChanged();
     #endregion
 		
 		public Res_Restaurant()
@@ -5338,6 +5366,26 @@ namespace FoodExpress
 					this._Commission = value;
 					this.SendPropertyChanged("Commission");
 					this.OnCommissionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Avatar", DbType="NVarChar(500)")]
+		public string Avatar
+		{
+			get
+			{
+				return this._Avatar;
+			}
+			set
+			{
+				if ((this._Avatar != value))
+				{
+					this.OnAvatarChanging(value);
+					this.SendPropertyChanging();
+					this._Avatar = value;
+					this.SendPropertyChanged("Avatar");
+					this.OnAvatarChanged();
 				}
 			}
 		}

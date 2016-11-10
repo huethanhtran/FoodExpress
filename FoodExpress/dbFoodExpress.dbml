@@ -163,6 +163,7 @@
       <Column Name="Active" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Column Name="IsPay" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Column Name="AddressOrder" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
+      <Column Name="ReturnBack" Type="System.Decimal" DbType="Money" CanBeNull="true" />
       <Association Name="Order_OrderDetail" Member="OrderDetails" ThisKey="IDOrder" OtherKey="IDOrder" Type="OrderDetail" />
       <Association Name="Customer_Order" Member="Customer" ThisKey="IDCustomer" OtherKey="IDCustomer" Type="Customer" IsForeignKey="true" />
       <Association Name="Res_Restaurant_Order" Member="Res_Restaurant" ThisKey="IDRes" OtherKey="IDRes" Type="Res_Restaurant" IsForeignKey="true" />
@@ -238,6 +239,7 @@
       <Column Name="Active" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Column Name="ServiceFee" Type="System.Decimal" DbType="Money" CanBeNull="true" />
       <Column Name="Commission" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="Avatar" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
       <Association Name="Res_Restaurant_Dish_Category" Member="Dish_Categories" ThisKey="IDRes" OtherKey="IDRes" Type="Dish_Category" />
       <Association Name="Res_Restaurant_Ingredient" Member="Ingredients" ThisKey="IDRes" OtherKey="IDRes" Type="Ingredient" />
       <Association Name="Res_Restaurant_Order" Member="Orders" ThisKey="IDRes" OtherKey="IDRes" Type="Order" />

@@ -1,0 +1,110 @@
+﻿@model PagedList.IPagedList<FoodExpress.Models.Restaurant>
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    List<City> lsCity = new List<City>();
+    if (TempData["Cities"] != null)
+    {
+        lsCity = TempData["Cities"] as List<City>;
+    }
+}
+
+<h2>Restaurant Management</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<form action="@Url.Action("Index" )" method="get">
+    <div class="m-r-10 input-prepend inside search-form no-boarder">
+            <input name="keyword" type="text" id="keyword" class="no-boarder " value="@ViewBag.CurrentFilter" placeholder="Search Restaurant" style="width:300px;">
+            @Html.DropDownList("cityID", new SelectList(lsCity, "IDCity", "NameCity"), "Select City", new { style = "float:left; margin-left:10px;"})
+           <input name="btnSearch" type="submit" id="btnSearch" class="btn btn-default" style="margin-left:10px; width: 100px;" value="Search">
+    </div>
+</form>
+<table class="table">
+    <tr>
+
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().NameRes)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().NameCity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().ResAddress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Phone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Website)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Fax)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Commission)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Active)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NameRes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NameCity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ResAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Website)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fax)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Commission)
+            </td>
+            <td>
+                <input type="checkbox" id="active" name="active" checked="@item.Active" onclick="UnactiveRestaurant(this,@item.IDRes)" />
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new {  id=item.IDRes  }) |
+                @Html.ActionLink("Orders", "GetAllRestaurantOrders", new { id = item.IDRes })
+            </td>
+        </tr>
+    }
+
+</table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, currentFilter = ViewBag.CurrentFilter, currentCityFilter = ViewBag.CurrentCityFilter }))
+<script>
+    function UnactiveRestaurant(item, id) {
+        var data = { id: id, value: $(item).is(":checked") == true ? true : false };
+        $.post("UnactiveRestaurant", data, function (response) {
+            if (response == "unsuccess") {
+                alert("You can not unactive this customer")
+            }
+        })
+    }
+</script>

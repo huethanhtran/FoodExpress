@@ -1,0 +1,177 @@
+﻿@model FoodExpress.Models.Restaurant
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<script src="~/Content/ckeditor/ckeditor.js"></script>
+<script src="~/Content/ckfinder/ckfinder.js"></script>
+<h2>Restaurant Details</h2>
+
+@using (Html.BeginForm("UpdateRestaurant", "Restaurant", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "Check data again", new { @class = "error" })
+
+        <div class="col-md-4">
+            <div>
+
+                <h3 class="text-black">Avatar</h3>
+                <div>
+                    <img src="../../Images/Restaurant/@Model.Avatar" alt="Avatar" width="200" />
+                </div>
+                <div style="margin-top:20px">
+                    <input type="file" name="ufAvatar" value="@Model.Avatar" accept=".jpg,.png,.jpeg,.gif" />
+                </div>
+
+
+            </div>
+            <hr />
+            <div>
+                <h3 class="text-black">Time and Fees</h3>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.TimeStart, htmlAttributes: new { @class = "form-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.TimeStart, new { @class = "form-control", type = "time" })
+                        @Html.ValidationMessageFor(model => model.TimeStart, "", new { @class = "error" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.TimeEnd, htmlAttributes: new { @class = "form-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.TimeEnd, new { @class = "form-control", type = "time" })
+                        @Html.ValidationMessageFor(model => model.TimeEnd, "", new { @class = "error" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.TimeBreakStart, htmlAttributes: new { @class = "form-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.TimeBreakStart, new { @class = "form-control", type = "time" })
+                        @Html.ValidationMessageFor(model => model.TimeBreakStart, "", new { @class = "error" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.TimeBreakEnd, htmlAttributes: new { @class = "form-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.TimeBreakEnd, new { @class = "form-control", type = "time" })
+                        @Html.ValidationMessageFor(model => model.TimeBreakEnd, "", new { @class = "error" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ServiceFee, htmlAttributes: new { @class = "form-label" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.ServiceFee, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ServiceFee, "", new { @class = "error" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Commission, htmlAttributes: new { @class = "form-label" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Commission, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Commission, "", new { @class = "error" })
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-8">
+            <h3 class="text-black">Information</h3>
+            <div class="form-group">
+                @Html.LabelFor(model => model.NameRes, htmlAttributes: new { @class = "form-label" })
+                <div class="controls">
+                    @Html.EditorFor(model => model.NameRes, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.NameRes, "", new { @class = "error" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.ResAddress, htmlAttributes: new { @class = "form-label" })
+                <div class="controls">
+                    @Html.EditorFor(model => model.ResAddress, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ResAddress, "", new { @class = "error" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.NameCity, htmlAttributes: new { @class = "form-label" })
+                <div class="controls">
+                    @Html.DropDownListFor(model => model.IDCity, new SelectList(Model.City, "IDCity", "NameCity"), "Select City")
+                    @Html.ValidationMessageFor(model => model.IDCity, "", new { @class = "error" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "form-label" })
+                <div class="controls">
+                    @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "error" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "form-label" })
+                <div class="controls">
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "error" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Website, htmlAttributes: new { @class = "form-label" })
+                <div class="controls">
+                    @Html.EditorFor(model => model.Website, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Website, "", new { @class = "error" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Fax, htmlAttributes: new { @class = "form-label" })
+                <div class="controls">
+                    @Html.EditorFor(model => model.Fax, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Fax, "", new { @class = "error" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Summary, htmlAttributes: new { @class = "form-label" })
+                <div class="controls">
+                    @Html.EditorFor(model => model.Summary, new { htmlAttributes = new { @class = "form-control", multiple = "true" } })
+                    @Html.ValidationMessageFor(model => model.Summary, "", new { @class = "error" })
+
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.DescriptionRes, htmlAttributes: new { @class = "form-label" })
+                <div class="controls">
+                    @Html.TextAreaFor(model => model.DescriptionRes, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.DescriptionRes, "", new { @class = "error" })
+                </div>
+            </div>
+            @*<div class="form-group">
+                @Html.LabelFor(model => model.Active, htmlAttributes: new { @class = "form-label" })
+                <div class="controls">
+                    @Html.CheckBox("Active", Model.Active, new { @checked = Model.Active })
+                    @Html.CheckBoxFor(model => model.Active)
+                    @Html.ValidationMessageFor(model => model.Active, "", new { @class = "error" })
+                </div>
+            </div>*@
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Update" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<script>
+    $(document).ready(function () {
+        var editor = CKEDITOR.replace("DescriptionRes");
+        CKFinder.setupCKEditor(null, '@Url.Content("~/Content/ckfinder/")');
+
+    })
+</script>

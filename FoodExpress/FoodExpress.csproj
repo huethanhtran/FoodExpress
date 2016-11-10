@@ -44,6 +44,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CKEditor.NET">
+      <HintPath>..\..\..\CKEditor.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="CKFinder">
+      <HintPath>C:\Users\ice\Downloads\ckfinder_aspnet_2.6.2\ckfinder\bin\Debug\CKFinder.dll</HintPath>
+    </Reference>
+    <Reference Include="CKFinder_FileEditor">
+      <HintPath>C:\Users\ice\Downloads\ckfinder_aspnet_2.6.2\ckfinder\bin\Debug\CKFinder_FileEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="CKFinder_ImageResize">
+      <HintPath>C:\Users\ice\Downloads\ckfinder_aspnet_2.6.2\ckfinder\bin\Debug\CKFinder_ImageResize.dll</HintPath>
+    </Reference>
+    <Reference Include="CKFinder_Watermark">
+      <HintPath>C:\Users\ice\Downloads\ckfinder_aspnet_2.6.2\ckfinder\bin\Debug\CKFinder_Watermark.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -131,6 +146,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\CityController.cs" />
     <Compile Include="Controllers\CustomerRoleController.cs" />
+    <Compile Include="Controllers\DishCategoryController.cs" />
     <Compile Include="Controllers\DishController.cs" />
     <Compile Include="Controllers\MethodController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
@@ -151,6 +167,7 @@
     <Compile Include="Models\City.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\CustomerRole.cs" />
+    <Compile Include="Models\Restaurant.cs" />
     <Compile Include="Models\Res_Category.cs" />
     <Compile Include="Models\Res_Cuisine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -420,7 +437,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Images\Customer\abc.png" />
+    <Content Include="Images\Customer\defaultAvatar.png" />
+    <Content Include="Images\Restaurant\defaultAvatar.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="dbFoodExpress.dbml">
@@ -458,13 +476,18 @@
     <Content Include="Views\City\Index.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\User\Details.cshtml" />
+    <Content Include="Views\Restaurant\Index.cshtml" />
+    <Content Include="Views\Restaurant\Details.cshtml" />
+    <Content Include="Views\Restaurant\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\ckeditor\" />
+    <Folder Include="Content\ckfinder\" />
+    <Folder Include="Views\DishCategory\" />
     <Folder Include="Views\Dish\" />
     <Folder Include="Views\Method\" />
     <Folder Include="Views\Order\" />
-    <Folder Include="Views\Restaurant\" />
     <Folder Include="Views\WareHouse\" />
   </ItemGroup>
   <ItemGroup>
