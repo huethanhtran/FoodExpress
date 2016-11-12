@@ -1,21 +1,18 @@
-﻿@using PagedList.Mvc
-@model PagedList.IPagedList<FoodExpress.Models.Res_Cuisine>
-
+﻿@model PagedList.IPagedList<FoodExpress.Models.DishCategory>
+@using PagedList.Mvc
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
-    Res_Cuisine cuisine = new Res_Cuisine();
-    cuisine.Active = false;
-    if (Session["cuisine"] != null)
+    Dish_Category dc = new Dish_Category { Active = false };
+    if (Session["dishcate"] != null)
     {
-        cuisine = Session["cuisine"] as Res_Cuisine;
-
+        dc = Session["dishcate"] as Dish_Category;
     }
 }
 
-<h2>Restaurant Cuisine Management</h2>
+<h2>Dish Category Management</h2>
 
-<form action="@Url.Action("CreateCuisine" )" method="post">
+<form action="@Url.Action("CreateDishCategory" )" method="post">
     <p style="color:red">@ViewBag.Notice</p>
     <div class="form-horizontal">
         <hr />
@@ -25,8 +22,8 @@
                 <label>Name</label>
             </div>
             <div class="col-md-10">
-                <input type="text" name="cuisinename" id="cuisinename" value="@cuisine.NameCuisine" />
-                
+                <input type="text" name="dishcatename" id="dishcatename" value="@dc.NameDishCate" />
+
             </div>
         </div>
 
@@ -35,14 +32,14 @@
                 <label>Active</label>
             </div>
             <div class="col-md-10">
-                <input type="checkbox" name="active" id="active" value="true" checked="@cuisine.Active.Value" />
+                <input type="checkbox" name="active" id="active" value="true" checked="@dc.Active" />
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-default" />
-                <input type="button" value="Cancel" onclick="location.href='@Url.Action("Cancel","RestaurantCuisine")'" class="btn btn-default" />
+                <input type="button" value="Cancel" onclick="location.href='@Url.Action("Cancel","DishCategory")'" class="btn btn-default" />
             </div>
         </div>
     </div>
@@ -50,14 +47,14 @@
 </form>
 <form action="@Url.Action("Index" )" method="get">
     <div class="m-r-10 input-prepend inside search-form no-boarder">
-        <input name="keyword" type="text" id="keyword" class="no-boarder " value="@ViewBag.CurrentFilter" placeholder="Search Cuisine" style="width:500px;">
+        <input name="keyword" type="text" id="keyword" class="no-boarder " value="@ViewBag.CurrentFilter" placeholder="Search Dish Category" style="width:500px;">
         <input name="btnSearch" type="submit" id="btnSearch" class="btn btn-default" style="margin-left:10px; width: 100px;" value="Search">
     </div>
 </form>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().NameCuisine)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().NameCate)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.FirstOrDefault().Active)
@@ -68,14 +65,15 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.NameCuisine)
+            @Html.DisplayFor(modelItem => item.NameCate)
         </td>
         <td>
-            @Html.CheckBoxFor(modelItem => item.Active)
+            @Html.DisplayFor(modelItem => item.Active)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new {  id=item.IDCuisine  }) |
-            @Html.ActionLink("Delete", "Delete", new {  id=item.IDCuisine })
+            @Html.ActionLink("Edit", "Edit", new { id=item.IDDishCate  }) |
+           
+            @Html.ActionLink("Delete", "Delete", new { id=item.IDDishCate })
         </td>
     </tr>
 }

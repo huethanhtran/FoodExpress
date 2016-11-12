@@ -146,6 +146,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\CityController.cs" />
     <Compile Include="Controllers\CustomerRoleController.cs" />
+    <Compile Include="Controllers\DishAttributeController.cs" />
     <Compile Include="Controllers\DishCategoryController.cs" />
     <Compile Include="Controllers\DishController.cs" />
     <Compile Include="Controllers\MethodController.cs" />
@@ -167,6 +168,9 @@
     <Compile Include="Models\City.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\CustomerRole.cs" />
+    <Compile Include="Models\Dish.cs" />
+    <Compile Include="Models\DishAttribute.cs" />
+    <Compile Include="Models\DishCategory.cs" />
     <Compile Include="Models\Restaurant.cs" />
     <Compile Include="Models\Res_Category.cs" />
     <Compile Include="Models\Res_Cuisine.cs" />
@@ -479,13 +483,14 @@
     <Content Include="Views\Restaurant\Index.cshtml" />
     <Content Include="Views\Restaurant\Details.cshtml" />
     <Content Include="Views\Restaurant\Create.cshtml" />
+    <Content Include="Views\DishCategory\Index.cshtml" />
+    <Content Include="Views\Dish\Index.cshtml" />
+    <Content Include="Views\DishAttribute\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\ckeditor\" />
     <Folder Include="Content\ckfinder\" />
-    <Folder Include="Views\DishCategory\" />
-    <Folder Include="Views\Dish\" />
     <Folder Include="Views\Method\" />
     <Folder Include="Views\Order\" />
     <Folder Include="Views\WareHouse\" />

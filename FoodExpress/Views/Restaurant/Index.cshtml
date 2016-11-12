@@ -87,7 +87,8 @@
             </td>
             <td>
                 @Html.ActionLink("Details", "Details", new {  id=item.IDRes  }) |
-                @Html.ActionLink("Orders", "GetAllRestaurantOrders", new { id = item.IDRes })
+                @Html.ActionLink("Orders", "Index","Order", new { id = item.IDRes },null) |
+                @Html.ActionLink("Dishes", "Index","Dish", new { id = item.IDRes },null) 
             </td>
         </tr>
     }

@@ -1278,6 +1278,8 @@ namespace FoodExpress
 		
 		private System.Nullable<bool> _Active;
 		
+		private System.Nullable<int> _IDRes;
+		
 		private EntitySet<Dish_Attribute> _Dish_Attributes;
 		
 		private EntitySet<Method> _Methods;
@@ -1285,6 +1287,8 @@ namespace FoodExpress
 		private EntitySet<OrderDetail> _OrderDetails;
 		
 		private EntityRef<Dish_Category> _Dish_Category;
+		
+		private EntityRef<Res_Restaurant> _Res_Restaurant;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -1302,6 +1306,8 @@ namespace FoodExpress
     partial void OnCreatedOnChanged();
     partial void OnActiveChanging(System.Nullable<bool> value);
     partial void OnActiveChanged();
+    partial void OnIDResChanging(System.Nullable<int> value);
+    partial void OnIDResChanged();
     #endregion
 		
 		public Dish()
@@ -1310,6 +1316,7 @@ namespace FoodExpress
 			this._Methods = new EntitySet<Method>(new Action<Method>(this.attach_Methods), new Action<Method>(this.detach_Methods));
 			this._OrderDetails = new EntitySet<OrderDetail>(new Action<OrderDetail>(this.attach_OrderDetails), new Action<OrderDetail>(this.detach_OrderDetails));
 			this._Dish_Category = default(EntityRef<Dish_Category>);
+			this._Res_Restaurant = default(EntityRef<Res_Restaurant>);
 			OnCreated();
 		}
 		
@@ -1437,6 +1444,30 @@ namespace FoodExpress
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IDRes", DbType="Int")]
+		public System.Nullable<int> IDRes
+		{
+			get
+			{
+				return this._IDRes;
+			}
+			set
+			{
+				if ((this._IDRes != value))
+				{
+					if (this._Res_Restaurant.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnIDResChanging(value);
+					this.SendPropertyChanging();
+					this._IDRes = value;
+					this.SendPropertyChanged("IDRes");
+					this.OnIDResChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Dish_Dish_Attribute", Storage="_Dish_Attributes", ThisKey="IDDish", OtherKey="IDDish")]
 		public EntitySet<Dish_Attribute> Dish_Attributes
 		{
@@ -1506,6 +1537,40 @@ namespace FoodExpress
 						this._IDDishCate = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("Dish_Category");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Res_Restaurant_Dish", Storage="_Res_Restaurant", ThisKey="IDRes", OtherKey="IDRes", IsForeignKey=true)]
+		public Res_Restaurant Res_Restaurant
+		{
+			get
+			{
+				return this._Res_Restaurant.Entity;
+			}
+			set
+			{
+				Res_Restaurant previousValue = this._Res_Restaurant.Entity;
+				if (((previousValue != value) 
+							|| (this._Res_Restaurant.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Res_Restaurant.Entity = null;
+						previousValue.Dishes.Remove(this);
+					}
+					this._Res_Restaurant.Entity = value;
+					if ((value != null))
+					{
+						value.Dishes.Add(this);
+						this._IDRes = value.IDRes;
+					}
+					else
+					{
+						this._IDRes = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Res_Restaurant");
 				}
 			}
 		}
@@ -1800,15 +1865,11 @@ namespace FoodExpress
 		
 		private string _NameDishCate;
 		
-		private System.Nullable<int> _IDRes;
-		
 		private System.Nullable<System.DateTime> _CreatedOn;
 		
 		private System.Nullable<bool> _Active;
 		
 		private EntitySet<Dish> _Dishes;
-		
-		private EntityRef<Res_Restaurant> _Res_Restaurant;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -1818,8 +1879,6 @@ namespace FoodExpress
     partial void OnIDDishCateChanged();
     partial void OnNameDishCateChanging(string value);
     partial void OnNameDishCateChanged();
-    partial void OnIDResChanging(System.Nullable<int> value);
-    partial void OnIDResChanged();
     partial void OnCreatedOnChanging(System.Nullable<System.DateTime> value);
     partial void OnCreatedOnChanged();
     partial void OnActiveChanging(System.Nullable<bool> value);
@@ -1829,7 +1888,6 @@ namespace FoodExpress
 		public Dish_Category()
 		{
 			this._Dishes = new EntitySet<Dish>(new Action<Dish>(this.attach_Dishes), new Action<Dish>(this.detach_Dishes));
-			this._Res_Restaurant = default(EntityRef<Res_Restaurant>);
 			OnCreated();
 		}
 		
@@ -1869,30 +1927,6 @@ namespace FoodExpress
 					this._NameDishCate = value;
 					this.SendPropertyChanged("NameDishCate");
 					this.OnNameDishCateChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IDRes", DbType="Int")]
-		public System.Nullable<int> IDRes
-		{
-			get
-			{
-				return this._IDRes;
-			}
-			set
-			{
-				if ((this._IDRes != value))
-				{
-					if (this._Res_Restaurant.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnIDResChanging(value);
-					this.SendPropertyChanging();
-					this._IDRes = value;
-					this.SendPropertyChanged("IDRes");
-					this.OnIDResChanged();
 				}
 			}
 		}
@@ -1947,40 +1981,6 @@ namespace FoodExpress
 			set
 			{
 				this._Dishes.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Res_Restaurant_Dish_Category", Storage="_Res_Restaurant", ThisKey="IDRes", OtherKey="IDRes", IsForeignKey=true)]
-		public Res_Restaurant Res_Restaurant
-		{
-			get
-			{
-				return this._Res_Restaurant.Entity;
-			}
-			set
-			{
-				Res_Restaurant previousValue = this._Res_Restaurant.Entity;
-				if (((previousValue != value) 
-							|| (this._Res_Restaurant.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Res_Restaurant.Entity = null;
-						previousValue.Dish_Categories.Remove(this);
-					}
-					this._Res_Restaurant.Entity = value;
-					if ((value != null))
-					{
-						value.Dish_Categories.Add(this);
-						this._IDRes = value.IDRes;
-					}
-					else
-					{
-						this._IDRes = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("Res_Restaurant");
-				}
 			}
 		}
 		
@@ -4917,7 +4917,7 @@ namespace FoodExpress
 		
 		private string _Avatar;
 		
-		private EntitySet<Dish_Category> _Dish_Categories;
+		private EntitySet<Dish> _Dishes;
 		
 		private EntitySet<Ingredient> _Ingredients;
 		
@@ -4977,7 +4977,7 @@ namespace FoodExpress
 		
 		public Res_Restaurant()
 		{
-			this._Dish_Categories = new EntitySet<Dish_Category>(new Action<Dish_Category>(this.attach_Dish_Categories), new Action<Dish_Category>(this.detach_Dish_Categories));
+			this._Dishes = new EntitySet<Dish>(new Action<Dish>(this.attach_Dishes), new Action<Dish>(this.detach_Dishes));
 			this._Ingredients = new EntitySet<Ingredient>(new Action<Ingredient>(this.attach_Ingredients), new Action<Ingredient>(this.detach_Ingredients));
 			this._Orders = new EntitySet<Order>(new Action<Order>(this.attach_Orders), new Action<Order>(this.detach_Orders));
 			this._Res_Categoty_Mappings = new EntitySet<Res_Categoty_Mapping>(new Action<Res_Categoty_Mapping>(this.attach_Res_Categoty_Mappings), new Action<Res_Categoty_Mapping>(this.detach_Res_Categoty_Mappings));
@@ -5390,16 +5390,16 @@ namespace FoodExpress
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Res_Restaurant_Dish_Category", Storage="_Dish_Categories", ThisKey="IDRes", OtherKey="IDRes")]
-		public EntitySet<Dish_Category> Dish_Categories
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Res_Restaurant_Dish", Storage="_Dishes", ThisKey="IDRes", OtherKey="IDRes")]
+		public EntitySet<Dish> Dishes
 		{
 			get
 			{
-				return this._Dish_Categories;
+				return this._Dishes;
 			}
 			set
 			{
-				this._Dish_Categories.Assign(value);
+				this._Dishes.Assign(value);
 			}
 		}
 		
@@ -5509,13 +5509,13 @@ namespace FoodExpress
 			}
 		}
 		
-		private void attach_Dish_Categories(Dish_Category entity)
+		private void attach_Dishes(Dish entity)
 		{
 			this.SendPropertyChanging();
 			entity.Res_Restaurant = this;
 		}
 		
-		private void detach_Dish_Categories(Dish_Category entity)
+		private void detach_Dishes(Dish entity)
 		{
 			this.SendPropertyChanging();
 			entity.Res_Restaurant = null;

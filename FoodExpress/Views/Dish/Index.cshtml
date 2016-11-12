@@ -1,0 +1,115 @@
+﻿@model PagedList.IPagedList<FoodExpress.Models.Dish>
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    Dish d = new Dish { Active = false };
+    if (Session["dish"] != null)
+    {
+        d = Session["dish"] as Dish;
+    }
+    var lsCate = Session["lsDishCate"] as List<Dish_Category>;
+}
+
+<h2>Dish Management</h2>
+
+<form action="@Url.Action("CreateDish" )" method="post">
+    <p style="color:red">@ViewBag.Notice</p>
+    <div class="form-horizontal">
+        <hr />
+        <div class="form-group">
+
+            <div class="control-label col-md-2">
+                <label>Name</label>
+            </div>
+            <div class="col-md-10">
+                <input type="text" name="dishname" id="dishname" value="@d.NameDish" />
+
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="control-label col-md-2">
+                <label>Category</label>
+            </div>
+            <div class="col-md-10">
+               @Html.DropDownList("category",new SelectList(lsCate,"IDDishCate","NameDishCate",d.IDDishCate),"Select Category",new { value = d.IDDishCate})
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="control-label col-md-2">
+                <label>Price</label>
+            </div>
+            <div class="col-md-10">
+                <input type="number" name="dishprice" id="dishprice" value="@d.Price" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="control-label col-md-2">
+                <label>Active</label>
+            </div>
+            <div class="col-md-10">
+                <input type="checkbox" name="active" id="active" value="true" checked="@d.Active.Value" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="button" value="Cancel" onclick="location.href='@Url.Action("Cancel","Dish")'" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+
+</form>
+<form action="@Url.Action("Index" )" method="get">
+    <div class="m-r-10 input-prepend inside search-form no-boarder">
+        <input name="keyword" type="text" id="keyword" class="no-boarder " value="@ViewBag.CurrentFilter" placeholder="Search Dish" style="width:500px;">
+        <input name="btnSearch" type="submit" id="btnSearch" class="btn btn-default" style="margin-left:10px; width: 100px;" value="Search">
+    </div>
+</form>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().NameDish)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().NameDishCate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Active)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.NameDish)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NameDishCate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Price)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Active)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.IDDish }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.IDDish }) |
+            @Html.ActionLink("Method", "Index","Method", new { id = item.IDDish },null) |
+            @Html.ActionLink("Attribute", "Index", "DishAttribute", new { id = item.IDDish }, null)
+        </td>
+    </tr>
+}
+
+</table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, currentFilter = ViewBag.CurrentFilter }))
