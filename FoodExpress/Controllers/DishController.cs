@@ -17,29 +17,41 @@ namespace FoodExpress.Controllers
         // GET: Dish
         public ActionResult Index(string message, string keyword, string currentFilter, int? page, int id)
         {
-            List<Models.Dish> lsDish = _db.Dishes.Where(x=>x.IDRes == id).Select(x => new Models.Dish { IDDish = x.IDDish, NameDish = x.NameDish, Active = x.Active.Value, NameDishCate = x.Dish_Category.NameDishCate, Price = x.Price.Value}).ToList();
-            if (message != null)
+            if (Session["user"] != null)
             {
-                ViewBag.Notice = message;
-            }
-            if (keyword != null)
-            {
-                page = 1;
+                Customer c = Session["user"] as Customer;
+                if (c != null && (c.IDRole == 3 || c.IDRole == 4 || c.IDRole == 5))
+                {
+                    List<Models.Dish> lsDish = _db.Dishes.Where(x => x.IDRes == id).Select(x => new Models.Dish { IDDish = x.IDDish, NameDish = x.NameDish, Active = x.Active.Value, NameDishCate = x.Dish_Category.NameDishCate, Price = x.Price.Value }).ToList();
+                    if (message != null)
+                    {
+                        ViewBag.Notice = message;
+                    }
+                    if (keyword != null)
+                    {
+                        page = 1;
+                    }
+                    else
+                    {
+                        keyword = currentFilter;
+                    }
+                    ViewBag.CurrentFilter = keyword;
+                    if (keyword != null)
+                    {
+                        lsDish = lsDish.Where(x => x.NameDish.ToLower().Contains(keyword.ToLower())).ToList();
+                    }
+                    int pagesize = 20;
+                    int pagenumber = page ?? 1;
+                    Session["lsDishCate"] = _db.Dish_Categories.Where(x => x.Active == true).ToList();
+                    Session["IDRes"] = id;
+                    return View(lsDish.ToPagedList(pagenumber, pagesize));
+                }
+                return View("PageNotFound");
             }
             else
             {
-                keyword = currentFilter;
+                return RedirectToAction("Login", "User");
             }
-            ViewBag.CurrentFilter = keyword;
-            if (keyword != null)
-            {
-                lsDish = lsDish.Where(x => x.NameDish.ToLower().Contains(keyword.ToLower())).ToList();
-            }
-            int pagesize = 20;
-            int pagenumber = page ?? 1;
-            Session["lsDishCate"] = _db.Dish_Categories.Where(x => x.Active == true).ToList();
-            Session["IDRes"] = id;
-            return View(lsDish.ToPagedList(pagenumber, pagesize));
         }
 
         [HttpPost]
@@ -90,7 +102,7 @@ namespace FoodExpress.Controllers
                 Dish d = _db.Dishes.Where(x => x.IDDish == id).SingleOrDefault();
                 Session["dish"] = d;
             }
-            return RedirectToAction("Index", new { id = (int)Session["IDRes"]});
+            return RedirectToAction("Index", new { id = (int)Session["IDRes"] });
         }
 
         public ActionResult Delete(int id)

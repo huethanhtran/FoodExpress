@@ -1,0 +1,106 @@
+﻿@model PagedList.IPagedList<FoodExpress.Models.Order>
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    Customer cus = Session["user"] as Customer;
+
+}
+
+<h2>Order Management</h2>
+
+<form action="@Url.Action("Index" )" method="get">
+    <div class="m-r-10 input-prepend inside search-form no-boarder">
+        <input name="StartDate" type="datetime" id="StartDate" class="no-boarder " value="@ViewBag.CurrentStartDateFilter" placeholder="Start Date" style="width:300px;">
+        <input name="EndDate" type="datetime" id="EndDate" class="no-boarder " value="@ViewBag.CurrentEndDateFilter" placeholder="End Date" style="width:300px; margin-left:10px;">
+        <input name="btnSearch" type="submit" id="btnSearch" class="btn btn-default" style="margin-left:10px; width: 100px;" value="Search">
+    </div>
+</form>
+<table class="table">
+    <tr>
+        <th>
+            Customer
+        </th>
+        <th>
+           Restaurant
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().AddressOrder)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().TotalPrice)
+        </th>
+        @{
+            if (cus.IDRole == 2 || cus.IDRole == 3)
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().ReturnBack)
+                </th>
+            }
+        }
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().IsPay)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Active)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Customer.NameCustomer)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Restaurant.NameRes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AddressOrder)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalPrice)
+            </td>
+            @{
+                if (cus.IDRole == 2 || cus.IDRole == 3)
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReturnBack)
+                    </td>
+                }
+            }
+            <td>
+                <input type="checkbox" id="ispay" name="ispay" checked="@item.IsPay" onclick="ChangeStatusOrder(this,'IsPay',@item.OrderId)" />
+            </td>
+            <td>
+                <input type="checkbox" id="active" name="active" checked="@item.Active" onclick="ChangeStatusOrder(this,'Active',@item.OrderId)" />
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new { id = item.OrderId })              
+            </td>
+        </tr>
+    }
+
+</table>
+<div>
+    <span style="margin-left:800px; width:100px; margin-right:10px">Total Return:</span>
+    <span id="lblTotal" style="font-weight:bold;">@ViewBag.Total</span>
+</div>
+
+
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter, IDRes = ViewBag.IDRes }))
+<script>
+    function ChangeStatusOrder(item, text, idorder) {
+        var value = $(item).is(":checked") == true ? true : false;
+        var data = { text: text, value: value, idOrder: idorder };
+        $.post("/Order/ChangeStatusOrder", data, function (response) {
+
+        })
+    }
+</script>

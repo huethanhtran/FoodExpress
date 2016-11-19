@@ -16,28 +16,41 @@ namespace FoodExpress.Controllers
         }
         public ActionResult Index(string message, string keyword, string currentFilter, int? page)
         {
-            List<Models.DishCategory> lsDish = _db.Dish_Categories.Select(x => new Models.DishCategory { IDDishCate = x.IDDishCate, NameCate = x.NameDishCate, Active = x.Active.Value }).ToList();
-            if (message != null)
+            if (Session["user"] != null)
             {
-                ViewBag.Notice = message;
-            }
-            if (keyword != null)
-            {
-                page = 1;
+                Customer c = Session["user"] as Customer;
+                if (c.IDRole == 3)
+                {
+                    List<Models.DishCategory> lsDish = _db.Dish_Categories.Select(x => new Models.DishCategory { IDDishCate = x.IDDishCate, NameCate = x.NameDishCate, Active = x.Active.Value }).ToList();
+                    if (message != null)
+                    {
+                        ViewBag.Notice = message;
+                    }
+                    if (keyword != null)
+                    {
+                        page = 1;
+                    }
+                    else
+                    {
+                        keyword = currentFilter;
+                    }
+                    ViewBag.CurrentFilter = keyword;
+                    if (keyword != null)
+                    {
+                        lsDish = lsDish.Where(x => x.NameCate.ToLower().Contains(keyword.ToLower())).ToList();
+                    }
+                    int pagesize = 20;
+                    int pagenumber = page ?? 1;
+                    return View(lsDish.ToPagedList(pagenumber, pagesize));
+                }
+                return View("PageNotFound");
+
             }
             else
             {
-                keyword = currentFilter;
+                return RedirectToAction("Login", "User");
             }
-            ViewBag.CurrentFilter = keyword;
-            if (keyword != null)
-            {
-                lsDish = lsDish.Where(x => x.NameCate.ToLower().Contains(keyword.ToLower())).ToList();
-            }
-            int pagesize = 20;
-            int pagenumber = page ?? 1;
-            return View(lsDish.ToPagedList(pagenumber, pagesize));
-           
+
         }
 
         [HttpPost]

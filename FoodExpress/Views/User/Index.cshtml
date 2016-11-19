@@ -65,6 +65,21 @@
                                 <option value="3">Super Admin</option>
                             </select>
                         }
+                        if (c.IDRole == 4)
+                        {
+                            <select name="ddlRole" id="ddlRole" class="form-control" onchange="GrantRoleUser(this, @item.IDCustomer)">
+                                <option value="0">Select Role</option>
+                                <option value="5">Manager</option>
+                                <option value="6">Employer</option>
+                            </select>
+                        }
+                        if (c.IDRole == 5)
+                        {
+                            <select name="ddlRole" id="ddlRole" class="form-control" onchange="GrantRoleUser(this, @item.IDCustomer)">
+                                <option value="0">Select Role</option>
+                                <option value="6">Employer</option>
+                            </select>
+                        }
                     } }
             </td>
         </tr>

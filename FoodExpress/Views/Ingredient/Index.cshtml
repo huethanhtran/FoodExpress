@@ -1,0 +1,115 @@
+﻿@model PagedList.IPagedList<FoodExpress.Models.Ingredient>
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    Ingredient ingr = new Ingredient { Active = false };
+    if (Session["Ingredient"] != null)
+    {
+        ingr = Session["Ingredient"] as Ingredient;
+    }
+    Customer cus = Session["user"] as Customer;
+    List<Res_Restaurant> lsRestaurant = new List<Res_Restaurant>();
+    if (Session["lsRes"] != null)
+    {
+        lsRestaurant = Session["lsRes"] as List<Res_Restaurant>;
+    }
+}
+
+<h2>Ingredient Management</h2>
+
+<form action="@Url.Action("CreateIngredient" )" method="post">
+    <p style="color:red">@ViewBag.Notice</p>
+    <div class="form-horizontal">
+        <hr />
+        <div class="form-group">
+            <div class="control-label col-md-2">
+                <label>Name</label>
+            </div>
+            <div class="col-md-10">
+                <input type="text" name="ingName" id="ingName" value="@ingr.NameIngredient" />
+
+            </div>
+        </div>
+        @{
+            if (cus.IDRole == 4)
+            {
+                <div class="form-group">
+                    <div class="control-label col-md-2">
+                        <label>Category</label>
+                    </div>
+                    <div class="col-md-10">
+                        @Html.DropDownList("restaurant", new SelectList(lsRestaurant, "IDRes", "NameRes", ingr.IDRes), "Select Restauant")
+                    </div>
+                </div>
+            }
+        }
+        <div class="form-group">
+            <div class="control-label col-md-2">
+                <label>Active</label>
+            </div>
+            <div class="col-md-10">
+                <input type="checkbox" name="active" id="active" value="true" checked="@ingr.Active.Value" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="button" value="Cancel" onclick="location.href='@Url.Action("Cancel","Ingredient")'" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+
+</form>
+<form action="@Url.Action("Index" )" method="get">
+    <div class="m-r-10 input-prepend inside search-form no-boarder">
+        <input name="keyword" type="text" id="keyword" class="no-boarder " value="@ViewBag.CurrentFilter" placeholder="Search Restaurant" style="width:300px;">
+        @{
+            if (cus.IDRole == 4)
+            {
+                @Html.DropDownList("currentRestaurantFilter", new SelectList(lsRestaurant, "IDRes", "NameRes", ViewBag.CurrentRestaurantFilter), "Select Restaurant", new { style = "float:left; margin-left:10px;" })
+            }
+        }
+        <input name="btnSearch" type="submit" id="btnSearch" class="btn btn-default" style="margin-left:10px; width: 100px;" value="Search">
+    </div>
+</form>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().NameIngredient)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().NameRes)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Active)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NameIngredient)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NameRes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Active)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.IDIngrdient }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.IDIngrdient })
+            </td>
+        </tr>
+    }
+
+</table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, currentFilter = ViewBag.CurrentFilter, currentRestaurantFilter = ViewBag.CurrentRestaurantFilter }))

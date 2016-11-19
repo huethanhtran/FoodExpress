@@ -671,8 +671,6 @@ namespace FoodExpress
 		
 		private string _PasswordCustomer;
 		
-		private string _PasswordSalt;
-		
 		private string _Email;
 		
 		private string _CustomerAddress;
@@ -690,6 +688,8 @@ namespace FoodExpress
 		private System.Nullable<bool> _Active;
 		
 		private string _Avatar;
+		
+		private System.Nullable<int> _IDRes;
 		
 		private EntitySet<Order> _Orders;
 		
@@ -709,8 +709,6 @@ namespace FoodExpress
     partial void OnUserNameChanged();
     partial void OnPasswordCustomerChanging(string value);
     partial void OnPasswordCustomerChanged();
-    partial void OnPasswordSaltChanging(string value);
-    partial void OnPasswordSaltChanged();
     partial void OnEmailChanging(string value);
     partial void OnEmailChanged();
     partial void OnCustomerAddressChanging(string value);
@@ -729,6 +727,8 @@ namespace FoodExpress
     partial void OnActiveChanged();
     partial void OnAvatarChanging(string value);
     partial void OnAvatarChanged();
+    partial void OnIDResChanging(System.Nullable<int> value);
+    partial void OnIDResChanged();
     #endregion
 		
 		public Customer()
@@ -834,26 +834,6 @@ namespace FoodExpress
 					this._PasswordCustomer = value;
 					this.SendPropertyChanged("PasswordCustomer");
 					this.OnPasswordCustomerChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PasswordSalt", DbType="VarChar(200)")]
-		public string PasswordSalt
-		{
-			get
-			{
-				return this._PasswordSalt;
-			}
-			set
-			{
-				if ((this._PasswordSalt != value))
-				{
-					this.OnPasswordSaltChanging(value);
-					this.SendPropertyChanging();
-					this._PasswordSalt = value;
-					this.SendPropertyChanged("PasswordSalt");
-					this.OnPasswordSaltChanged();
 				}
 			}
 		}
@@ -1038,6 +1018,26 @@ namespace FoodExpress
 					this._Avatar = value;
 					this.SendPropertyChanged("Avatar");
 					this.OnAvatarChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IDRes", DbType="Int")]
+		public System.Nullable<int> IDRes
+		{
+			get
+			{
+				return this._IDRes;
+			}
+			set
+			{
+				if ((this._IDRes != value))
+				{
+					this.OnIDResChanging(value);
+					this.SendPropertyChanging();
+					this._IDRes = value;
+					this.SendPropertyChanged("IDRes");
+					this.OnIDResChanged();
 				}
 			}
 		}
@@ -3887,7 +3887,7 @@ namespace FoodExpress
 		
 		private System.Nullable<int> _IDDish;
 		
-		private string _AttributeXML;
+		private string _Attributes;
 		
 		private System.Nullable<decimal> _Price;
 		
@@ -3909,8 +3909,8 @@ namespace FoodExpress
     partial void OnIDOrderChanged();
     partial void OnIDDishChanging(System.Nullable<int> value);
     partial void OnIDDishChanged();
-    partial void OnAttributeXMLChanging(string value);
-    partial void OnAttributeXMLChanged();
+    partial void OnAttributesChanging(string value);
+    partial void OnAttributesChanged();
     partial void OnPriceChanging(System.Nullable<decimal> value);
     partial void OnPriceChanged();
     partial void OnQuantityChanging(System.Nullable<int> value);
@@ -3994,22 +3994,22 @@ namespace FoodExpress
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AttributeXML", DbType="NVarChar(500)")]
-		public string AttributeXML
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Attributes", DbType="NVarChar(500)")]
+		public string Attributes
 		{
 			get
 			{
-				return this._AttributeXML;
+				return this._Attributes;
 			}
 			set
 			{
-				if ((this._AttributeXML != value))
+				if ((this._Attributes != value))
 				{
-					this.OnAttributeXMLChanging(value);
+					this.OnAttributesChanging(value);
 					this.SendPropertyChanging();
-					this._AttributeXML = value;
-					this.SendPropertyChanged("AttributeXML");
-					this.OnAttributeXMLChanged();
+					this._Attributes = value;
+					this.SendPropertyChanged("Attributes");
+					this.OnAttributesChanged();
 				}
 			}
 		}

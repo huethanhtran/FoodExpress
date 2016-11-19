@@ -8,6 +8,7 @@
     {
         lsCity = TempData["Cities"] as List<City>;
     }
+    Customer cus = Session["user"] as Customer;
 }
 
 <h2>Restaurant Management</h2>
@@ -87,8 +88,14 @@
             </td>
             <td>
                 @Html.ActionLink("Details", "Details", new {  id=item.IDRes  }) |
-                @Html.ActionLink("Orders", "Index","Order", new { id = item.IDRes },null) |
-                @Html.ActionLink("Dishes", "Index","Dish", new { id = item.IDRes },null) 
+                @{
+                    if (cus.IDRole == 2 || cus.IDRole == 3 || cus.IDRole == 4)
+                    {
+                        @Html.ActionLink("Orders", "Index", "Order", new { id = item.IDRes }, null)
+                    }
+                }
+               
+               | @Html.ActionLink("Dishes", "Index","Dish", new { id = item.IDRes },null) 
             </td>
         </tr>
     }

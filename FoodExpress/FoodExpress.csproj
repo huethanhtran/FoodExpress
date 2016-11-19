@@ -149,13 +149,13 @@
     <Compile Include="Controllers\DishAttributeController.cs" />
     <Compile Include="Controllers\DishCategoryController.cs" />
     <Compile Include="Controllers\DishController.cs" />
+    <Compile Include="Controllers\IngredientController.cs" />
     <Compile Include="Controllers\MethodController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\RestaurantCategoryController.cs" />
     <Compile Include="Controllers\RestaurantController.cs" />
     <Compile Include="Controllers\RestaurantCuisineController.cs" />
     <Compile Include="Controllers\UserController.cs" />
-    <Compile Include="Controllers\WareHouseController.cs" />
     <Compile Include="dbFoodExpress.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -165,12 +165,17 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\DataHelper.cs" />
+    <Compile Include="Models\Attribute.cs" />
     <Compile Include="Models\City.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\CustomerRole.cs" />
     <Compile Include="Models\Dish.cs" />
     <Compile Include="Models\DishAttribute.cs" />
     <Compile Include="Models\DishCategory.cs" />
+    <Compile Include="Models\Element\ConstantKey.cs" />
+    <Compile Include="Models\Ingredient.cs" />
+    <Compile Include="Models\Order.cs" />
+    <Compile Include="Models\OrderDetail.cs" />
     <Compile Include="Models\Restaurant.cs" />
     <Compile Include="Models\Res_Category.cs" />
     <Compile Include="Models\Res_Cuisine.cs" />
@@ -486,13 +491,16 @@
     <Content Include="Views\DishCategory\Index.cshtml" />
     <Content Include="Views\Dish\Index.cshtml" />
     <Content Include="Views\DishAttribute\Index.cshtml" />
+    <Content Include="Views\Ingredient\Index.cshtml" />
+    <Content Include="Views\User\Login.cshtml" />
+    <Content Include="Views\Order\Index.cshtml" />
+    <Content Include="Views\Order\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\ckeditor\" />
     <Folder Include="Content\ckfinder\" />
     <Folder Include="Views\Method\" />
-    <Folder Include="Views\Order\" />
     <Folder Include="Views\WareHouse\" />
   </ItemGroup>
   <ItemGroup>

@@ -1,0 +1,158 @@
+﻿@model IEnumerable<FoodExpress.Models.OrderDetail>
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<p>
+    @Html.ActionLink("Back to List", "Index", "Order")
+</p>
+<div>
+    <h4>Order Details</h4>
+    <hr />
+    <form action="@Url.Action("UpdateOrder","Order")", method="post">
+        <dl class="dl-horizontal">
+            <dt style="margin-bottom:30px; margin-right:30px">
+                Customer
+            </dt>
+
+            <dd style="margin-bottom:30px">
+                @Html.DisplayFor(model => model.FirstOrDefault().Order.Customer.NameCustomer)
+            </dd>
+            <dt style="margin-bottom:30px; margin-right:30px">
+                Address
+            </dt>
+
+            <dd style="margin-bottom:30px">
+                @*@Html.TextBoxFor(model => model.FirstOrDefault().Order.AddressOrder)*@
+                <input type="text" name="AddressOrder" value="@Model.FirstOrDefault().Order.AddressOrder" onchange="ChangeNormalInformation(this,'AddressOrder')" />
+            </dd>
+
+            <dt style="margin-bottom:30px; margin-right:30px">
+                Restaurant
+            </dt>
+            <dd style="margin-bottom:30px">
+                @Html.DisplayFor(model => model.FirstOrDefault().Order.Res_Restaurant.NameRes)
+            </dd>
+
+            <dt style="margin-bottom:30px; margin-right:30px">
+                Service Fee
+            </dt>
+            <dd style="margin-bottom:30px">
+                @*@Html.TextBoxFor(model => model.FirstOrDefault().Order.ServiceFee, new { type = "number" })*@
+                <input type="number" name="ServiceFee" value="@Model.FirstOrDefault().Order.ServiceFee" onchange="ChangeNormalInformation(this, 'ServiceFee')" />
+            </dd>
+
+            <dt style="margin-bottom:30px; margin-right:30px">
+                Shipping Fee
+            </dt>
+            <dd style="margin-bottom:30px">
+                @*@Html.TextBoxFor(model => model.FirstOrDefault().Order.ShippingFee, new { type = "number" })*@
+                <input type="number" name="ShippingFee" value="@Model.FirstOrDefault().Order.ShippingFee" onchange="ChangeNormalInformation(this, 'ShippingFee')" />
+            </dd>
+
+            <dt style="margin-bottom:30px; margin-right:30px">
+                Dishes
+            </dt>
+            <dd style="margin-bottom:30px">
+                <table class="table">
+                    <th>
+                        Dish
+                    </th>
+                    <th>
+                        Attributes
+                    </th>
+                    <th>
+                        Price
+                    </th>
+                    <th>
+                        Quantity
+                    </th>
+                    <th></th>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(model => item.Dish.NameDish)
+                            </td>
+                            <td>
+                                <table class="table">
+                                    <th>
+                                        Name
+                                    </th>
+                                    <th>
+                                        Price
+                                    </th>
+                                    <th></th>
+                                    @foreach (var item1 in item.Attributes)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(Model => item1.Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(Model => item1.Price)
+                                            </td>
+                                            <td>
+                                                @Html.ActionLink("Delete", "DeleteTopping", new { id = item1.Id, idDetail = item.IDODetail, idOrder = item.Order.IDOrder })
+                                            </td>
+                                        </tr>
+                                    }
+                                </table>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.Price)
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(model => item.Quantity, new { type = "number", @onchange = "UpdateQuantity(this," + @item.IDODetail + "," + @item.Dish.IDDish + ")" })
+                            </td>
+                            <td>
+                                @Html.ActionLink("Delete", "DeleteDish", new { id = item.IDODetail, idOrder = item.Order.IDOrder })
+                            </td>
+                        </tr>
+                    }
+                </table>
+
+            </dd>
+            <dt style="margin-bottom:30px; margin-right:30px">
+
+            </dt>
+            <dd style="margin-bottom:30px">
+                <input type="submit" name="btnUpdate" value="Update"  class="btn btn-default" />
+            </dd>
+
+        </dl>
+    </form>
+    
+</div>
+<script>
+    function UpdateQuantity(item, idDetail, idDish) {
+        var quantity = $(item).val();
+        var data = { newquantity: quantity, idDish: idDish, idDetail: idDetail }
+        $.post("@Url.Action("UpdateDish","Order")", data, function (response) {
+            if (response != "OK") {
+                alert(response);
+            }
+        });
+    }
+    function ChangeNormalInformation(item, text) {
+        var value = $(item).val();
+        var data = { value: value, text: text };
+        $.post("@Url.Action("ChangeNormalInformation", "Order")", data, function (response) {
+
+        });
+    }
+</script>
+
+
+
+
+
+
+
+
+
+
+}

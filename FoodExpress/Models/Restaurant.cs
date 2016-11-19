@@ -64,5 +64,9 @@ namespace FoodExpress.Models
         public List<FoodExpress.City> City { get; set; }
        
         public string Owner { get; set; }
+        [Display(Name = "Category")]
+        public List<Res_Categoty_Mapping> Res_Categoty_Mappings { get; set; }
+        [Display(Name = "Cuisine")]
+        public List<Res_Cuisine_Mapping> Res_Cuisine_Mappings { get; set; }
     }
 }

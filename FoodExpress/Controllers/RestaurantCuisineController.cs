@@ -18,28 +18,40 @@ namespace FoodExpress.Controllers
         }
         public ActionResult Index(string message, string keyword, string currentFilter, int? page)
         {
-            List<Models.Res_Cuisine> lsCuisine = _db.Res_Cuisines.Select(x => new Models.Res_Cuisine { IDCuisine = x.IDCuisine, NameCuisine = x.NameCuisine, Active = x.Active.Value }).ToList();
-            if (message != null)
+            if (Session["user"] != null)
             {
-                ViewBag.Notice = message;
-            }
-            if (keyword != null)
-            {
-                page = 1;
+                Customer c = Session["user"] as Customer;
+                if (c.IDRole == 2 || c.IDRole == 3)
+                {
+                    List<Models.Res_Cuisine> lsCuisine = _db.Res_Cuisines.Select(x => new Models.Res_Cuisine { IDCuisine = x.IDCuisine, NameCuisine = x.NameCuisine, Active = x.Active.Value }).ToList();
+                    if (message != null)
+                    {
+                        ViewBag.Notice = message;
+                    }
+                    if (keyword != null)
+                    {
+                        page = 1;
+                    }
+                    else
+                    {
+                        keyword = currentFilter;
+                    }
+                    ViewBag.CurrentFilter = keyword;
+                    if (keyword != null)
+                    {
+                        lsCuisine = lsCuisine.Where(x => x.NameCuisine.ToLower().Contains(keyword.ToLower())).ToList();
+                    }
+                    int pagesize = 20;
+                    int pagenumber = page ?? 1;
+                    return View(lsCuisine.ToPagedList(pagenumber, pagesize));
+                }
+                return View("PageNotFound");
             }
             else
             {
-                keyword = currentFilter;
+                return RedirectToAction("Login", "User");
             }
-            ViewBag.CurrentFilter = keyword;
-            if (keyword != null)
-            {
-                lsCuisine = lsCuisine.Where(x => x.NameCuisine.ToLower().Contains(keyword.ToLower())).ToList();
-            }
-            int pagesize = 20;
-            int pagenumber = page ?? 1;
-            return View(lsCuisine.ToPagedList(pagenumber, pagesize));
-            
+
         }
 
         [HttpPost]

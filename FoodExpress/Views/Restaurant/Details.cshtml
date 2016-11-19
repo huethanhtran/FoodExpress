@@ -3,6 +3,8 @@
 @{
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    List<Res_Cuisine> lsCuisine = ViewBag.Cuisine as List<Res_Cuisine>;
+    List<Res_Category> lsCategory = ViewBag.Category as List<Res_Category>;
 }
 <script src="~/Content/ckeditor/ckeditor.js"></script>
 <script src="~/Content/ckfinder/ckfinder.js"></script>
@@ -134,6 +136,71 @@
                 </div>
             </div>
             <div class="form-group">
+                @Html.LabelFor(model => model.Res_Categoty_Mappings, htmlAttributes: new { @class = "form-label" })
+                <div class="controls">
+                    @foreach (var item in lsCategory)
+                    {
+                        if (Model.Res_Categoty_Mappings.Any(x => x.IDCate == item.IDCate))
+                        {
+                            var c = Model.Res_Categoty_Mappings.Where(x => x.IDCate == item.IDCate).SingleOrDefault();
+                            <div style="width:auto; float:left;">
+                                <div class="col-md-3">
+                                    <input type="checkbox" name="chkCate" checked="true" onclick="ChangeRestaurantMapping(this,'Category',@c.IDRCM, @item.IDCate)" />
+                                </div>
+                                <div class="col-md-7">
+                                    <span>@item.NameCate</span>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div style="width:auto; float:left;">
+                                <div class="col-md-3">
+                                    <input type="checkbox" name="chkCate" onclick="ChangeRestaurantMapping(this,'Category',0, @item.IDCate)" />
+                                </div>
+                                <div class="col-md-7">
+                                    <span>@item.NameCate</span>
+                                </div>
+                            </div>
+                        }
+
+                    }
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Res_Cuisine_Mappings, htmlAttributes: new { @class = "form-label" })
+                <div class="controls">
+                    @foreach (var item in lsCuisine)
+                    {
+                        if (Model.Res_Cuisine_Mappings.Any(x => x.IDCuisine == item.IDCuisine))
+                        {
+                            var c = Model.Res_Cuisine_Mappings.Where(x => x.IDCuisine == item.IDCuisine).SingleOrDefault();
+                            <div style="width:auto; float:left;">
+                                <div class="col-md-3">
+                                    <input type="checkbox" name="chkCuisine" checked="true" onclick="ChangeRestaurantMapping(this,'Cuisine',@c.IDRCM, @item.IDCuisine)" />
+                                </div>
+                                <div class="col-md-7">
+                                    <span>@item.NameCuisine</span>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div style="width:auto; float:left;">
+                                <div class="col-md-3">
+                                    <input type="checkbox" name="chkCate" onclick="ChangeRestaurantMapping(this,'Cuisine',0, @item.IDCuisine)" />
+                                </div>
+                                <div class="col-md-7">
+                                    <span>@item.NameCuisine</span>
+                                </div>
+                            </div>
+                        }
+
+                    }
+                </div>
+            </div>
+            <div class="form-group">
                 @Html.LabelFor(model => model.Summary, htmlAttributes: new { @class = "form-label" })
                 <div class="controls">
                     @Html.EditorFor(model => model.Summary, new { htmlAttributes = new { @class = "form-control", multiple = "true" } })
@@ -149,13 +216,13 @@
                 </div>
             </div>
             @*<div class="form-group">
-                @Html.LabelFor(model => model.Active, htmlAttributes: new { @class = "form-label" })
-                <div class="controls">
-                    @Html.CheckBox("Active", Model.Active, new { @checked = Model.Active })
-                    @Html.CheckBoxFor(model => model.Active)
-                    @Html.ValidationMessageFor(model => model.Active, "", new { @class = "error" })
-                </div>
-            </div>*@
+                    @Html.LabelFor(model => model.Active, htmlAttributes: new { @class = "form-label" })
+                    <div class="controls">
+                        @Html.CheckBox("Active", Model.Active, new { @checked = Model.Active })
+                        @Html.CheckBoxFor(model => model.Active)
+                        @Html.ValidationMessageFor(model => model.Active, "", new { @class = "error" })
+                    </div>
+                </div>*@
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
                     <input type="submit" value="Update" class="btn btn-default" />
@@ -163,6 +230,7 @@
             </div>
         </div>
     </div>
+
 }
 
 <div>
@@ -174,4 +242,11 @@
         CKFinder.setupCKEditor(null, '@Url.Content("~/Content/ckfinder/")');
 
     })
+    function ChangeRestaurantMapping(item, text, idMapping, idC) {
+        var value = $(item).is(":checked") == true ? true : false;
+        var data = { text: text, idMapping: idMapping, value: value, idC: idC};
+        $.post("@Url.Action("ChangeRestaurantMapping","Restaurant")", data, function (response) {
+
+        });
+    }
 </script>

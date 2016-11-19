@@ -17,27 +17,39 @@ namespace FoodExpress.Controllers
         // GET: CustomerRole
         public ActionResult Index(string message, string keyword, string currentFilter, int? page)
         {
-            List<Models.CustomerRole> lsRole = _db.CustomerRoles.Where(x=>x.IDRole != 2 && x.IDRole != 3).Select(x=> new Models.CustomerRole { IDRole = x.IDRole, NameRole = x.NameRole, Active = x.Active.Value }).ToList();
-            if (message != null)
+            if (Session["user"] != null)
             {
-                ViewBag.Notice = message;
-            }
-            if (keyword != null)
-            {
-                page = 1;
+                Customer c = Session["user"] as Customer;
+                if (c.IDRole == 2 || c.IDRole == 3)
+                {
+                    List<Models.CustomerRole> lsRole = _db.CustomerRoles.Where(x => x.IDRole != 2 && x.IDRole != 3).Select(x => new Models.CustomerRole { IDRole = x.IDRole, NameRole = x.NameRole, Active = x.Active.Value }).ToList();
+                    if (message != null)
+                    {
+                        ViewBag.Notice = message;
+                    }
+                    if (keyword != null)
+                    {
+                        page = 1;
+                    }
+                    else
+                    {
+                        keyword = currentFilter;
+                    }
+                    ViewBag.CurrentFilter = keyword;
+                    if (keyword != null)
+                    {
+                        lsRole = lsRole.Where(x => x.NameRole.ToLower().Contains(keyword.ToLower())).ToList();
+                    }
+                    int pagesize = 20;
+                    int pagenumber = page ?? 1;
+                    return View(lsRole.ToPagedList(pagenumber, pagesize));
+                }
+                return View("PageNotFound");
             }
             else
             {
-                keyword = currentFilter;
+                return RedirectToAction("Login", "User");
             }
-            ViewBag.CurrentFilter = keyword;
-            if (keyword != null)
-            {
-                lsRole = lsRole.Where(x => x.NameRole.ToLower().Contains(keyword.ToLower())).ToList();
-            }
-            int pagesize = 20;
-            int pagenumber = page ?? 1;
-            return View(lsRole.ToPagedList(pagenumber, pagesize));
         }
 
         [HttpPost]
@@ -90,7 +102,7 @@ namespace FoodExpress.Controllers
         {
             if (id != 0)
             {
-                if (!_db.Customers.Any(x=>x.IDRole == id))
+                if (!_db.Customers.Any(x => x.IDRole == id))
                 {
                     _db.CustomerRoles.DeleteOnSubmit(_db.CustomerRoles.Where(x => x.IDRole == id).SingleOrDefault());
                     _db.SubmitChanges();

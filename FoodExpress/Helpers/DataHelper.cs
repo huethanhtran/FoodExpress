@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace FoodExpress.Helpers
 {
-    public class DataHelper
+    public static class DataHelper
     {
-        public string EncryptPasswordSalt(string password)
+        public static string EncryptPasswordSalt(string password)
         {
             HashAlgorithm algorithm = new SHA1Managed();
-            var saltBytes = GenerateSalt(160);
+            var saltBytes = GenerateSalt(50);
             var plainTextBytes = Encoding.ASCII.GetBytes(password);
 
             var plainTextWithSaltBytes = AppendByteArray(plainTextBytes, saltBytes);
@@ -21,12 +21,14 @@ namespace FoodExpress.Helpers
 
             return Convert.ToBase64String(saltedSHA1WithAppendedSaltBytes);
         }
-        private byte[] GenerateSalt(int size)
+        private static byte[] GenerateSalt(int size)
         {
-            var rng = new RNGCryptoServiceProvider();
             var buff = new byte[size];
-            rng.GetBytes(buff);
-            return buff;
+            for (int i = 0; i < size; i++)
+            {
+                buff[i] = Convert.ToByte(size - i);
+            }
+            return SHA1.Create().ComputeHash(buff);
         }
         private static byte[] AppendByteArray(byte[] byteArray1, byte[] byteArray2)
         {

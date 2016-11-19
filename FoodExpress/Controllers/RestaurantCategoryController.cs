@@ -10,36 +10,48 @@ namespace FoodExpress.Controllers
     public class RestaurantCategoryController : Controller
     {
         dbFoodExpressDataContext _db;
-        
+
         public RestaurantCategoryController()
         {
             _db = new dbFoodExpressDataContext();
-            
+
         }
         // GET: RestaurantCategory
-        public ActionResult Index(string message, string keyword,string currentFilter, int? page)
+        public ActionResult Index(string message, string keyword, string currentFilter, int? page)
         {
-            List<Res_Category> lsCate = _db.Res_Categories.ToList();
-            if (message != null)
+            if (Session["user"] != null)
             {
-                ViewBag.Notice = message;
-            }
-            if (keyword != null)
-            {
-                page = 1;
+                Customer c = Session["user"] as Customer;
+                if (c.IDRole == 2 || c.IDRole == 3)
+                {
+                    List<Res_Category> lsCate = _db.Res_Categories.ToList();
+                    if (message != null)
+                    {
+                        ViewBag.Notice = message;
+                    }
+                    if (keyword != null)
+                    {
+                        page = 1;
+                    }
+                    else
+                    {
+                        keyword = currentFilter;
+                    }
+                    ViewBag.CurrentFilter = keyword;
+                    if (keyword != null)
+                    {
+                        lsCate = lsCate.Where(x => x.NameCate.ToLower().Contains(keyword.ToLower())).ToList();
+                    }
+                    int pagesize = 20;
+                    int pagenumber = page ?? 1;
+                    return View(lsCate.ToPagedList(pagenumber, pagesize));
+                }
+                return View("PageNotFound");
             }
             else
             {
-                keyword = currentFilter;
+                return RedirectToAction("Login", "User");
             }
-            ViewBag.CurrentFilter = keyword;
-            if (keyword != null)
-            {
-                lsCate = lsCate.Where(x => x.NameCate.ToLower().Contains(keyword.ToLower())).ToList();
-            }
-            int pagesize = 20;
-            int pagenumber = page ?? 1;
-            return View(lsCate.ToPagedList(pagenumber, pagesize));
         }
 
         [HttpPost]
@@ -74,7 +86,7 @@ namespace FoodExpress.Controllers
             {
                 notice = "Check data again";
             }
-            return RedirectToAction("Index", new { message = notice});
+            return RedirectToAction("Index", new { message = notice });
         }
 
         public ActionResult Edit(int id)
@@ -87,7 +99,7 @@ namespace FoodExpress.Controllers
             return RedirectToAction("Index");
         }
 
-       
+
         public ActionResult Delete(int id)
         {
             if (id != 0)
@@ -108,6 +120,6 @@ namespace FoodExpress.Controllers
             return RedirectToAction("Index");
         }
 
-       
+
     }
 }

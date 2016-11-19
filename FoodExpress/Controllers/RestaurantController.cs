@@ -17,57 +17,125 @@ namespace FoodExpress.Controllers
             _db = new dbFoodExpressDataContext();
         }
         // GET: Restaurant
-        public ActionResult Index(string keyword, string currentFilter, int? cityID, int? currentCityFilter, int? page)
+        public ActionResult Index(string keyword, string currentFilter, int? cityID, int? currentCityFilter, int? page, int? ownerid)
         {
-            List<Restaurant> lsRes = _db.Res_Restaurants.Select(x => new Restaurant
+            if (Session["user"] != null)
             {
-                IDRes = x.IDRes,
-                NameRes = x.NameRes,
-                Active = x.Active.Value,
-                Commission = x.Commission,
-                CreatedOn = x.CreatedOn.Value,
-                DescriptionRes = x.DescriptionRes,
-                Summary = x.Summary,
-                Email = x.Email,
-                Fax = x.Fax,
-                IDCity = x.IDCity,
-                OwnerId = x.OwnerId,
-                Phone = x.Phone,
-                ResAddress = x.ResAddress,
-                ServiceFee = x.ServiceFee,
-                TimeBreakEnd = x.TimeBreakEnd.Value,
-                TimeBreakStart = x.TimeBreakStart.Value,
-                TimeEnd = x.TimeEnd.Value,
-                TimeStart = x.TimeStart.Value,
-                Website = x.Website,
-                NameCity = x.City.NameCity
-            }).ToList();
-            if (keyword != null)
-            {
-                page = 1;
+                Customer c = Session["user"] as Customer;
+                List<Restaurant> lsRes = new List<Restaurant>();
+                if (c.IDRole == 2 || c.IDRole == 3)
+                {
+                   lsRes = _db.Res_Restaurants.Select(x => new Restaurant
+                    {
+                        IDRes = x.IDRes,
+                        NameRes = x.NameRes,
+                        Active = x.Active.Value,
+                        Commission = x.Commission,
+                        CreatedOn = x.CreatedOn.Value,
+                        DescriptionRes = x.DescriptionRes,
+                        Summary = x.Summary,
+                        Email = x.Email,
+                        Fax = x.Fax,
+                        IDCity = x.IDCity,
+                        OwnerId = x.OwnerId,
+                        Phone = x.Phone,
+                        ResAddress = x.ResAddress,
+                        ServiceFee = x.ServiceFee,
+                        TimeBreakEnd = x.TimeBreakEnd.Value,
+                        TimeBreakStart = x.TimeBreakStart.Value,
+                        TimeEnd = x.TimeEnd.Value,
+                        TimeStart = x.TimeStart.Value,
+                        Website = x.Website,
+                        NameCity = x.City.NameCity
+                    }).ToList();
+               
+                }
+                else if(c.IDRole == 4)
+                {
+                    if (ownerid != null)
+                    {
+                        lsRes = _db.Res_Restaurants.Where(x=>x.OwnerId == ownerid).Select(x => new Restaurant
+                        {
+                            IDRes = x.IDRes,
+                            NameRes = x.NameRes,
+                            Active = x.Active.Value,
+                            Commission = x.Commission,
+                            CreatedOn = x.CreatedOn.Value,
+                            DescriptionRes = x.DescriptionRes,
+                            Summary = x.Summary,
+                            Email = x.Email,
+                            Fax = x.Fax,
+                            IDCity = x.IDCity,
+                            OwnerId = x.OwnerId,
+                            Phone = x.Phone,
+                            ResAddress = x.ResAddress,
+                            ServiceFee = x.ServiceFee,
+                            TimeBreakEnd = x.TimeBreakEnd.Value,
+                            TimeBreakStart = x.TimeBreakStart.Value,
+                            TimeEnd = x.TimeEnd.Value,
+                            TimeStart = x.TimeStart.Value,
+                            Website = x.Website,
+                            NameCity = x.City.NameCity
+                        }).ToList();
+                    }
+                }
+                else if (c.IDRole == 5 || c.IDRole == 6)
+                {
+                    lsRes = _db.Res_Restaurants.Where(x => x.IDRes == c.IDRes).Select(x => new Restaurant
+                    {
+                        IDRes = x.IDRes,
+                        NameRes = x.NameRes,
+                        Active = x.Active.Value,
+                        Commission = x.Commission,
+                        CreatedOn = x.CreatedOn.Value,
+                        DescriptionRes = x.DescriptionRes,
+                        Summary = x.Summary,
+                        Email = x.Email,
+                        Fax = x.Fax,
+                        IDCity = x.IDCity,
+                        OwnerId = x.OwnerId,
+                        Phone = x.Phone,
+                        ResAddress = x.ResAddress,
+                        ServiceFee = x.ServiceFee,
+                        TimeBreakEnd = x.TimeBreakEnd.Value,
+                        TimeBreakStart = x.TimeBreakStart.Value,
+                        TimeEnd = x.TimeEnd.Value,
+                        TimeStart = x.TimeStart.Value,
+                        Website = x.Website,
+                        NameCity = x.City.NameCity
+                    }).ToList();
+                }
+                if (keyword != null)
+                {
+                    page = 1;
+                }
+                else
+                {
+                    keyword = currentFilter;
+                }
+                if (!cityID.HasValue)
+                {
+                    cityID = currentCityFilter;
+                }
+                ViewBag.CurrentFilter = keyword;
+                ViewBag.CurrentCityFilter = cityID;
+                if (keyword != null)
+                {
+                    lsRes = lsRes.Where(x => x.NameRes.ToLower().Contains(keyword.ToLower()) || x.Email.ToLower().Contains(keyword.ToLower()) || x.Phone.ToLower().Contains(keyword.ToLower()) || x.Fax.ToLower().Contains(keyword.ToLower()) || x.ResAddress.ToLower().Contains(keyword.ToLower()) || x.Website.ToLower().Contains(keyword.ToLower())).ToList();
+                }
+                if (cityID.HasValue)
+                {
+                    lsRes = lsRes.Where(x => x.IDCity == cityID.Value).ToList();
+                }
+                int pagesize = 20;
+                int pagenumber = page ?? 1;
+                TempData["Cities"] = _db.Cities.ToList();
+                return View(lsRes.ToPagedList(pagenumber, pagesize));
             }
             else
             {
-                keyword = currentFilter;
+                return RedirectToAction("Login", "User");
             }
-            if (!cityID.HasValue)
-            {
-                cityID = currentCityFilter;
-            }
-            ViewBag.CurrentFilter = keyword;
-            ViewBag.CurrentCityFilter = cityID;
-            if (keyword != null)
-            {
-                lsRes = lsRes.Where(x => x.NameRes.ToLower().Contains(keyword.ToLower()) || x.Email.ToLower().Contains(keyword.ToLower()) || x.Phone.ToLower().Contains(keyword.ToLower()) || x.Fax.ToLower().Contains(keyword.ToLower()) || x.ResAddress.ToLower().Contains(keyword.ToLower()) || x.Website.ToLower().Contains(keyword.ToLower())).ToList();
-            }
-            if (cityID.HasValue)
-            {
-                lsRes = lsRes.Where(x => x.IDCity == cityID.Value).ToList();
-            }
-            int pagesize = 20;
-            int pagenumber = page ?? 1;
-            TempData["Cities"] = _db.Cities.ToList();
-            return View(lsRes.ToPagedList(pagenumber, pagesize));
         }
         [HttpPost]
         public ActionResult UnactiveRestaurant(int id, bool value)
@@ -119,6 +187,18 @@ namespace FoodExpress.Controllers
                         City = _db.Cities.ToList(),
                         Avatar = res.Avatar
                     };
+                    r.Res_Categoty_Mappings = _db.Res_Categoty_Mappings.Where(x => x.IDRes == id && x.Active == true).ToList();
+                    if (r.Res_Categoty_Mappings == null)
+                    {
+                        r.Res_Categoty_Mappings = new List<Res_Categoty_Mapping>();
+                    }
+                    r.Res_Cuisine_Mappings = _db.Res_Cuisine_Mappings.Where(x => x.IDRes == id && x.Active == true).ToList();
+                    if (r.Res_Cuisine_Mappings == null)
+                    {
+                        r.Res_Cuisine_Mappings = new List<Res_Cuisine_Mapping>();
+                    }
+                    ViewBag.Category = _db.Res_Categories.Where(x=>x.Active ==true).ToList();
+                    ViewBag.Cuisine = _db.Res_Cuisines.Where(x => x.Active == true).ToList();
                     Session["Res"] = r;
                     return View(r);
                 }
@@ -168,6 +248,45 @@ namespace FoodExpress.Controllers
                     r.TimeStart = model.TimeStart;
                     r.Website = model.Website;
                     _db.SubmitChanges();
+
+                    //delete all cuisine
+                    var lsCuisine = _db.Res_Cuisine_Mappings.Where(x => x.IDRes == res.IDRes).ToList();
+                    if (lsCuisine != null)
+                    {
+                        _db.Res_Cuisine_Mappings.DeleteAllOnSubmit(lsCuisine);
+                        _db.SubmitChanges();
+                    }
+                    //delete all category
+                    var lsCategory = _db.Res_Categoty_Mappings.Where(x => x.IDRes == res.IDRes).ToList();
+                    if (lsCategory != null)
+                    {
+                        _db.Res_Categoty_Mappings.DeleteAllOnSubmit(lsCategory);
+                        _db.SubmitChanges();
+                    }
+                    //insert cuisine
+                    if (res.Res_Cuisine_Mappings.Count > 0)
+                    {
+                        List<Res_Cuisine_Mapping> lsRCM = res.Res_Cuisine_Mappings.Where(x => x.Active == true).Select(x => new Res_Cuisine_Mapping
+                        {
+                            Active = true,
+                            IDCuisine = x.IDCuisine,
+                            IDRes = res.IDRes
+                        }).ToList();
+                        _db.Res_Cuisine_Mappings.InsertAllOnSubmit(lsRCM);
+                        _db.SubmitChanges();
+                    }
+                    //insert category
+                    if (res.Res_Categoty_Mappings.Count > 0)
+                    {
+                        List<Res_Categoty_Mapping> lsRCM = res.Res_Categoty_Mappings.Where(x => x.Active == true).Select(x => new Res_Categoty_Mapping
+                        {
+                            Active = true,
+                            IDCate = x.IDCate,
+                            IDRes = res.IDRes
+                        }).ToList();
+                        _db.Res_Categoty_Mappings.InsertAllOnSubmit(lsRCM);
+                        _db.SubmitChanges();
+                    }
                     return RedirectToAction("Index");
                 }
 
@@ -248,6 +367,68 @@ namespace FoodExpress.Controllers
         public ActionResult Cancel()
         {
             return View("Create", new Restaurant { City = _db.Cities.ToList() });
+        }
+        [HttpPost]
+        public ActionResult ChangeRestaurantMapping(string text, int idMapping, bool value, int idC)
+        {
+            Restaurant res = Session["Res"] as Restaurant;
+            if (res != null)
+            {
+                switch (text)
+                {
+                    case "Category":
+                        if (idMapping > 0)
+                        {
+                            var c = res.Res_Categoty_Mappings.Where(x => x.IDRCM == idMapping).SingleOrDefault();
+                            c.Active = value;
+                        }
+                        else
+                        {
+                            if (res.Res_Categoty_Mappings.Any(x=>x.IDCate == idC))
+                            {
+                                var c = res.Res_Categoty_Mappings.Where(x => x.IDCate == idC).SingleOrDefault();
+                                c.Active = value;
+                            }
+                            else
+                            {
+                                res.Res_Categoty_Mappings.Add(new Res_Categoty_Mapping
+                                {
+                                    Active = value,
+                                    IDCate = idC
+                                });
+                            }
+                        }
+                        Session["Res"] = res;
+                        break;
+                    case "Cuisine":
+                        if (idMapping > 0)
+                        {
+                            var c = res.Res_Cuisine_Mappings.Where(x => x.IDRCM == idMapping).SingleOrDefault();
+                            c.Active = value;
+                        }
+                        else
+                        {
+                            if (res.Res_Cuisine_Mappings.Any(x => x.IDCuisine == idC))
+                            {
+                                var c = res.Res_Cuisine_Mappings.Where(x => x.IDCuisine == idC).SingleOrDefault();
+                                c.Active = value;
+                            }
+                            else
+                            {
+                                res.Res_Cuisine_Mappings.Add(new Res_Cuisine_Mapping
+                                {
+                                    Active = value,
+                                    IDCuisine = idC
+                                });
+                            }
+                        }
+                        Session["Res"] = res;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return Json("Can not change item");
         }
     }
 }
