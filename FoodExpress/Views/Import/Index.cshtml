@@ -1,0 +1,111 @@
+﻿@model PagedList.IPagedList<FoodExpress.Models.Import>
+
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Import Management</h2>
+
+
+<form action="@Url.Action("Index" )" method="get">
+    <div class="m-r-10 input-prepend inside search-form no-boarder">
+        <input name="StartDate" type="datetime" id="StartDate" class="no-boarder " value="@ViewBag.CurrentStartDateFilter" placeholder="Start Date" style="width:300px;">
+        <input name="EndDate" type="datetime" id="EndDate" class="no-boarder " value="@ViewBag.CurrentEndDateFilter" placeholder="End Date" style="width:300px; margin-left:10px;">
+        <input name="btnSearch" type="submit" id="btnSearch" class="btn btn-default" style="margin-left:10px; width: 100px;" value="Search">
+    </div>
+</form>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().ImportDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().TotalPrice)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().CreatedOn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Importer)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Active)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.TextBoxFor(modelItem => item.ImportDate, "{0: dd/MM/yyyy}", new { type="datetime", onchange= "ChangeDateImport(this,"+@item.IDImport+")" })
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalPrice, new { value = item.TotalPrice.ToString()})
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedOn, "{0: dd/MM/yyyy}")
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Importer)
+            </td>
+            <td>
+                <input type="checkbox" name="chkActive" value="true" checked="@item.Active" onclick="UnactiveImport(this, @item.IDImport)" />
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new { id = item.IDImport }) |
+                @{
+                    if (item.ImportDate > DateTime.Now)
+                    {
+                        @Html.ActionLink("Edit", "Edit", new { id = item.IDImport })
+                        
+                    }
+
+                }
+                |
+                @{
+                    if (item.ImportDate > DateTime.Now)
+                    {
+                        @Html.ActionLink("Delete", "Delete", new { id = item.IDImport })
+                        
+                    }
+
+                }
+            </td>
+        </tr>
+                    }
+
+</table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, currentStartDateFilter = ViewBag.CurrentStartDateFilter, currentEndDateFilter = ViewBag.CurrentEndDateFilter}))
+<script>
+    function UnactiveImport(item, idImport) {
+        var value = $(item).is(":checked") == true ? true : false;
+        var data = { value: value, idImport: idImport };
+        $.post("/Import/UnactiveImport", data, function (response) {
+            if (response != "OK") {
+                alert(response);
+            }
+        })
+    }
+    function ChangeDateImport(item, idImport) {
+        var value = $(item).val();
+        var data = { value: value, idImport: idImport };
+        $.post("/Import/ChangeDateImport", data, function (response) {
+            if (response != "OK") {
+                alert(response);
+            }
+        })
+    }
+</script>

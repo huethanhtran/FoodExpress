@@ -1,0 +1,124 @@
+﻿@model IEnumerable<FoodExpress.Models.ExportDetail>
+@using FoodExpress.Models.Element;
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    List<Ingredient> ls = ViewBag.Ingredients as List<Ingredient>;
+}
+
+<h2>Edit</h2>
+
+<form action="@Url.Action("UpdateExport")" , method="post">
+    <h4>Export Detail</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt style="margin-bottom:30px; margin-right:30px">
+            Title
+        </dt>
+
+        <dd style="margin-bottom:30px">
+            <input type="text" name="Title" value="@Model.FirstOrDefault().Export.Title" />
+            <label class="error">@ViewBag.ExportDate</label>
+        </dd>
+        <dt style="margin-bottom:30px; margin-right:30px">
+            Export Date
+        </dt>
+
+        <dd style="margin-bottom:30px">
+            @*@Html.TextBoxFor(model => model.FirstOrDefault().Order.AddressOrder)*@
+            <input type="datetime" name="ExportDate" value="@Model.FirstOrDefault().Export.ExportDate.Value.ToString("yyyy/MM/dd")" />
+        </dd>
+
+        <dt style="margin-bottom:30px; margin-right:30px">
+            Ingredient
+        </dt>
+        <dd style="margin-bottom:30px">
+            <table class="table">
+                <th>
+                    Name
+                </th>
+                <th>
+                    Price
+                </th>
+                <th>
+                    Quantity
+                </th>
+                <th>
+                    Unit
+                </th>
+
+                @foreach (var item in ls)
+                {
+                    <tr>
+                        <td>
+                            <span>@item.NameIngredient</span>
+                        </td>
+                        @{
+                            if (Model.Any(x => x.Ingredient.IDIngredient == item.IDIngredient))
+                            {
+                                var ingre = Model.Where(x => x.Ingredient.IDIngredient == item.IDIngredient).SingleOrDefault();
+                                <td>
+                                    @Html.TextBox("price", ingre.Price.ToString(), new { type = "number", onchange = "ChangeIngredientInformation(this,'Price'," + @ingre.IDEDetail + "," + @item.IDIngredient + ")" })
+                                </td>
+                                <td>
+                                    @Html.TextBox("quantity", ingre.Quantity.ToString(), new { type = "number", onchange = "ChangeIngredientInformation(this,'Quantity'," + @ingre.IDEDetail + "," + @item.IDIngredient + ")" })
+                                </td>
+                                <td>
+                                    @Html.DropDownList("ddlUnit", EnumHelper.GetSelectList(typeof(Unit), (Unit)ingre.Unit), "Select Unit", new { @class = "form-control", onchange = "ChangeUnitInformation(this, " + @ingre.IDEDetail + "," + @item.IDIngredient + ")" })
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    @Html.TextBox("price", 0, new { type = "number", onchange = "ChangeIngredientInformation(this,'Price',0," + @item.IDIngredient + ")" })
+                                </td>
+                                <td>
+                                    @Html.TextBox("quantity", 0, new { type = "number", onchange = "ChangeIngredientInformation(this,'Quantity',0," + @item.IDIngredient + ")" })
+                                </td>
+                                <td>
+                                    @Html.DropDownList("ddlUnit", EnumHelper.GetSelectList(typeof(Unit)), "Select Unit", new { @class = "form-control", onchange = "ChangeUnitInformation(this, 0," + @item.IDIngredient + ")" })
+                                </td>
+                            }
+                        }
+
+                    </tr>
+                            }
+            </table>
+
+        </dd>
+        <dt style="margin-bottom:30px; margin-right:30px">
+
+        </dt>
+        <dd style="margin-bottom:30px">
+            <input type="submit" name="btnUpdate" value="Update" class="btn btn-default" />
+        </dd>
+
+    </dl>
+
+</form>
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<script>
+    function ChangeIngredientInformation(item, text, idDetail, idIngredient) {
+        var value = $(item).val();
+        var data = { text: text, idDetail: idDetail, idIngredient: idIngredient, value: value };
+        $.post("/Export/ChangeIngredientInformation", data, function (response) {
+            if(response != "OK")
+            {
+                alert(response);
+            }
+        })
+    }
+
+    function ChangeUnitInformation(item, idDetail, idIngredient) {
+        var value = $(item).val();
+        var data = { idDetail: idDetail, idIngredient: idIngredient, value: value };
+        $.post("/Export/ChangeUnitInformation", data, function (response) {
+            if (response != "OK") {
+                alert(response);
+            }
+        })
+    }
+</script>

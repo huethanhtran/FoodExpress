@@ -94,6 +94,7 @@
       <Column Name="Unit" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="TotalPrice" Type="System.Decimal" DbType="Money" CanBeNull="true" />
       <Column Name="Active" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Price" Type="System.Decimal" DbType="Money" CanBeNull="true" />
       <Association Name="Ingredient_ExportDetail" Member="Ingredient" ThisKey="IDIngredient" OtherKey="IDIngredient" Type="Ingredient" IsForeignKey="true" />
       <Association Name="WarehouseExport_ExportDetail" Member="WarehouseExport" ThisKey="IDExport" OtherKey="IDExport" Type="WarehouseExport" IsForeignKey="true" />
     </Type>
@@ -107,6 +108,7 @@
       <Column Name="Unit" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="TotalPrice" Type="System.Decimal" DbType="Money" CanBeNull="true" />
       <Column Name="Active" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Price" Type="System.Decimal" DbType="Money" CanBeNull="true" />
       <Association Name="WarehouseImport_ImportDetail" Member="WarehouseImport" ThisKey="IDImport" OtherKey="IDImport" Type="WarehouseImport" IsForeignKey="true" />
       <Association Name="Ingredient_ImportDetail" Member="Ingredient" ThisKey="IDIngredient" OtherKey="IDIngredient" Type="Ingredient" IsForeignKey="true" />
     </Type>
@@ -260,4 +262,50 @@
       <Association Name="WarehouseExport_ExportDetail" Member="ExportDetails" ThisKey="IDExport" OtherKey="IDExport" Type="ExportDetail" />
     </Type>
   </Table>
+  <Function Name="dbo.sp_Import_GetAllImportByCustomer" Method="sp_Import_GetAllImportByCustomer">
+    <Parameter Name="CustomerRole" Parameter="customerRole" Type="System.Int32" DbType="Int" />
+    <Parameter Name="CustomerId" Parameter="customerId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="sp_Import_GetAllImportByCustomerResult">
+      <Column Name="IDImport" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Title" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="ImportDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="TotalPrice" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="NameCustomer" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.sp_Import_CreateNewImport" Method="sp_Import_CreateNewImport">
+    <Parameter Name="Title" Parameter="title" Type="System.String" DbType="NVarChar(100)" />
+    <Parameter Name="ImportDate" Parameter="importDate" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="TotalPrice" Parameter="totalPrice" Type="System.Decimal" DbType="Decimal(18,0)" />
+    <Parameter Name="CustomerId" Parameter="customerId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="sp_Import_CreateNewImportResult">
+      <Column Name="IdImport" Type="System.Decimal" DbType="Decimal(38,0)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.sp_Export_CreateNewExport" Method="sp_Export_CreateNewExport">
+    <Parameter Name="Title" Parameter="title" Type="System.String" DbType="NVarChar(100)" />
+    <Parameter Name="ExportDate" Parameter="exportDate" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="TotalPrice" Parameter="totalPrice" Type="System.Decimal" DbType="Decimal(18,0)" />
+    <Parameter Name="CustomerId" Parameter="customerId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="sp_Export_CreateNewExportResult">
+      <Column Name="IdExport" Type="System.Decimal" DbType="Decimal(38,0)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.sp_Export_GetAllExportByCustomer" Method="sp_Export_GetAllExportByCustomer">
+    <Parameter Name="CustomerRole" Parameter="customerRole" Type="System.Int32" DbType="Int" />
+    <Parameter Name="CustomerId" Parameter="customerId" Type="System.Int32" DbType="Int" />
+    <ElementType Name="sp_Export_GetAllExportByCustomerResult">
+      <Column Name="IDExport" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Title" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="ExportDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="TotalPrice" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="CreatedOn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="NameCustomer" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
 </Database>

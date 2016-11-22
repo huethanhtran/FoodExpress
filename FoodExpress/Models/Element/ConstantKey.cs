@@ -12,6 +12,7 @@ namespace FoodExpress.Models.Element
         Gram = 2,
         Lit = 3,
         Mililit = 4,
-        Bottle = 5
+        Bottle = 5,
+        Pack = 6
     }
 }

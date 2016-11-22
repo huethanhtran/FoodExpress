@@ -1,0 +1,102 @@
+﻿@using FoodExpress.Models.Element;
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    List<Ingredient> ls = ViewBag.Ingredients as List<Ingredient>;
+    Customer c = Session["user"] as Customer;
+}
+
+
+
+<form action="@Url.Action("CreateImport","Import")" , method="post">
+    <h4>Create Import</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt style="margin-bottom:30px; margin-right:30px">
+            Title
+        </dt>
+
+        <dd style="margin-bottom:30px">
+            <input type="text" name="Title"/>
+        </dd>
+        <dt style="margin-bottom:30px; margin-right:30px">
+            Import Date
+        </dt>
+
+        <dd style="margin-bottom:30px">
+            @*@Html.TextBoxFor(model => model.FirstOrDefault().Order.AddressOrder)*@
+            <input type="datetime" name="ImportDate" /> 
+            <label class="error">@ViewBag.ImportDate</label>
+        </dd>
+      
+        <dt style="margin-bottom:30px; margin-right:30px">
+            Ingredient
+        </dt>
+        <dd style="margin-bottom:30px">
+            <table class="table">
+                <th>
+                    Name
+                </th>
+                <th>
+                    Price
+                </th>
+                <th>
+                    Quantity
+                </th>
+                <th>
+                    Unit
+                </th>
+
+                @foreach (var item in ls)
+                {
+                    <tr>
+                        <td>
+                            <span>@item.NameIngredient</span>
+                        </td>
+                        <td>
+                            <input type="number" name="price" value="0" onchange="ChangeIngredientInformation(this,'Price',@item.IDIngredient)" />
+                        </td>
+                        <td>
+                            <input type="number" name="quantity" value="0" onchange="ChangeIngredientInformation(this,'Quantity',@item.IDIngredient)" />
+                        </td>
+                        <td>
+                            @Html.DropDownList("ddlUnit", EnumHelper.GetSelectList(typeof(Unit)), "Select Unit", new { @class = "form-control", onchange = "ChangeUnitInformation(this," + @item.IDIngredient + ")" })
+                        </td>
+                    </tr>
+                }
+            </table>
+
+        </dd>
+        <dt style="margin-bottom:30px; margin-right:30px">
+
+        </dt>
+        <dd style="margin-bottom:30px">
+            <input type="submit" name="btnSave" value="Save" class="btn btn-default" />
+        </dd>
+
+    </dl>
+
+</form>
+
+<script>
+    function ChangeIngredientInformation(item, text, idIngredient) {
+        var value = $(item).val();
+        var data = { text: text,idIngredient: idIngredient, value: value };
+        $.post("/Import/CreateNewImportInformation", data, function (response) {
+            if (response != "OK") {
+                alert(response);
+            }
+        })
+    }
+
+    function ChangeUnitInformation(item, idIngredient) {
+        var value = $(item).val();
+        var data = {  idIngredient: idIngredient, value: value };
+        $.post("/Import/CreateNewImportUnit", data, function (response) {
+            if (response != "OK") {
+                alert(response);
+            }
+        })
+    }
+</script>
+

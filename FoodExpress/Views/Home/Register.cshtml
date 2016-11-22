@@ -1,0 +1,38 @@
+﻿
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="contact">
+    <div class="container">
+        <div class="menu-title">
+            <h3>Register</h3>
+        </div>
+        <div class="contact-form">
+            
+                <input id="txtCustomerName" name="txtCustomerName" type="text" value="Name" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Name';}" required="">
+                <div class="row">
+                    <div class="col-md-6 cnt-inpt">
+                        <input id="txtUserName" name="txtUserName" type="text" value="User Name" data-form="footexpress" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'User Name';}" required="">
+                    </div>
+                    <div class="col-md-6 cnt-inpt">
+                        <input id="txtPassword" name="txtPassword" type="password" placeholder="Password" data-form="footexpress" required="">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 cnt-inpt">
+                        <input id="txtEmail" name="txtEmail" type="email" data-form="footexpress" value="Email" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Email';}" required="">
+                    </div>
+                    <div class="col-md-6 cnt-inpt">
+                        <input id="txtAddress" name="txtAddress" type="text" data-form="footexpress" value="Address" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Address';}" required="">
+                    </div>
+                </div>
+               
+                <button  class="btn1 btn-1 btn-1e"> Submit </button>
+            
+        </div>
+        
+    </div>
+</div>
+

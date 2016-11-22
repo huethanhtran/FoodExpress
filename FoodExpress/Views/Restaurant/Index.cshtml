@@ -18,9 +18,9 @@
 </p>
 <form action="@Url.Action("Index" )" method="get">
     <div class="m-r-10 input-prepend inside search-form no-boarder">
-            <input name="keyword" type="text" id="keyword" class="no-boarder " value="@ViewBag.CurrentFilter" placeholder="Search Restaurant" style="width:300px;">
-            @Html.DropDownList("cityID", new SelectList(lsCity, "IDCity", "NameCity"), "Select City", new { style = "float:left; margin-left:10px;"})
-           <input name="btnSearch" type="submit" id="btnSearch" class="btn btn-default" style="margin-left:10px; width: 100px;" value="Search">
+        <input name="keyword" type="text" id="keyword" class="no-boarder " value="@ViewBag.CurrentFilter" placeholder="Search Restaurant" style="width:300px;">
+        @Html.DropDownList("cityID", new SelectList(lsCity, "IDCity", "NameCity"), "Select City", new { style = "float:left; margin-left:10px;"})
+        <input name="btnSearch" type="submit" id="btnSearch" class="btn btn-default" style="margin-left:10px; width: 100px;" value="Search">
     </div>
 </form>
 <table class="table">
@@ -87,18 +87,27 @@
                 <input type="checkbox" id="active" name="active" checked="@item.Active" onclick="UnactiveRestaurant(this,@item.IDRes)" />
             </td>
             <td>
-                @Html.ActionLink("Details", "Details", new {  id=item.IDRes  }) |
+                @Html.ActionLink("Details", "Details", new { id = item.IDRes }) |
+
+                @Html.ActionLink("Orders", "Index", "Order", new { id = item.IDRes }, null)
+
+                | @Html.ActionLink("Dishes", "Index", "Dish", new { id = item.IDRes }, null) |
                 @{
-                    if (cus.IDRole == 2 || cus.IDRole == 3 || cus.IDRole == 4)
+                    if (cus.IDRole == 4 || cus.IDRole == 5)
                     {
-                        @Html.ActionLink("Orders", "Index", "Order", new { id = item.IDRes }, null)
+                        @Html.ActionLink("Import", "Create", "Import", new { id = item.IDRes }, null)
+                    } 
+                } |
+                @{
+                    if (cus.IDRole == 4 || cus.IDRole == 5)
+                    {
+                        @Html.ActionLink("Export", "Create", "Export", new { id = item.IDRes }, null)
                     }
                 }
-               
-               | @Html.ActionLink("Dishes", "Index","Dish", new { id = item.IDRes },null) 
+                
             </td>
         </tr>
-    }
+                    }
 
 </table>
 <br />

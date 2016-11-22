@@ -281,6 +281,34 @@ namespace FoodExpress
 				return this.GetTable<WarehouseExport>();
 			}
 		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.sp_Import_GetAllImportByCustomer")]
+		public ISingleResult<sp_Import_GetAllImportByCustomerResult> sp_Import_GetAllImportByCustomer([global::System.Data.Linq.Mapping.ParameterAttribute(Name="CustomerRole", DbType="Int")] System.Nullable<int> customerRole, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CustomerId", DbType="Int")] System.Nullable<int> customerId)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), customerRole, customerId);
+			return ((ISingleResult<sp_Import_GetAllImportByCustomerResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.sp_Import_CreateNewImport")]
+		public ISingleResult<sp_Import_CreateNewImportResult> sp_Import_CreateNewImport([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Title", DbType="NVarChar(100)")] string title, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ImportDate", DbType="DateTime")] System.Nullable<System.DateTime> importDate, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="TotalPrice", DbType="Decimal(18,0)")] System.Nullable<decimal> totalPrice, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CustomerId", DbType="Int")] System.Nullable<int> customerId)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), title, importDate, totalPrice, customerId);
+			return ((ISingleResult<sp_Import_CreateNewImportResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.sp_Export_CreateNewExport")]
+		public ISingleResult<sp_Export_CreateNewExportResult> sp_Export_CreateNewExport([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Title", DbType="NVarChar(100)")] string title, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ExportDate", DbType="DateTime")] System.Nullable<System.DateTime> exportDate, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="TotalPrice", DbType="Decimal(18,0)")] System.Nullable<decimal> totalPrice, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CustomerId", DbType="Int")] System.Nullable<int> customerId)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), title, exportDate, totalPrice, customerId);
+			return ((ISingleResult<sp_Export_CreateNewExportResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.sp_Export_GetAllExportByCustomer")]
+		public ISingleResult<sp_Export_GetAllExportByCustomerResult> sp_Export_GetAllExportByCustomer([global::System.Data.Linq.Mapping.ParameterAttribute(Name="CustomerRole", DbType="Int")] System.Nullable<int> customerRole, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CustomerId", DbType="Int")] System.Nullable<int> customerId)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), customerRole, customerId);
+			return ((ISingleResult<sp_Export_GetAllExportByCustomerResult>)(result.ReturnValue));
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.City")]
@@ -2037,6 +2065,8 @@ namespace FoodExpress
 		
 		private System.Nullable<bool> _Active;
 		
+		private System.Nullable<decimal> _Price;
+		
 		private EntityRef<Ingredient> _Ingredient;
 		
 		private EntityRef<WarehouseExport> _WarehouseExport;
@@ -2059,6 +2089,8 @@ namespace FoodExpress
     partial void OnTotalPriceChanged();
     partial void OnActiveChanging(System.Nullable<bool> value);
     partial void OnActiveChanged();
+    partial void OnPriceChanging(System.Nullable<decimal> value);
+    partial void OnPriceChanged();
     #endregion
 		
 		public ExportDetail()
@@ -2216,6 +2248,26 @@ namespace FoodExpress
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Price", DbType="Money")]
+		public System.Nullable<decimal> Price
+		{
+			get
+			{
+				return this._Price;
+			}
+			set
+			{
+				if ((this._Price != value))
+				{
+					this.OnPriceChanging(value);
+					this.SendPropertyChanging();
+					this._Price = value;
+					this.SendPropertyChanged("Price");
+					this.OnPriceChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Ingredient_ExportDetail", Storage="_Ingredient", ThisKey="IDIngredient", OtherKey="IDIngredient", IsForeignKey=true)]
 		public Ingredient Ingredient
 		{
@@ -2325,6 +2377,8 @@ namespace FoodExpress
 		
 		private System.Nullable<bool> _Active;
 		
+		private System.Nullable<decimal> _Price;
+		
 		private EntityRef<WarehouseImport> _WarehouseImport;
 		
 		private EntityRef<Ingredient> _Ingredient;
@@ -2347,6 +2401,8 @@ namespace FoodExpress
     partial void OnTotalPriceChanged();
     partial void OnActiveChanging(System.Nullable<bool> value);
     partial void OnActiveChanged();
+    partial void OnPriceChanging(System.Nullable<decimal> value);
+    partial void OnPriceChanged();
     #endregion
 		
 		public ImportDetail()
@@ -2500,6 +2556,26 @@ namespace FoodExpress
 					this._Active = value;
 					this.SendPropertyChanged("Active");
 					this.OnActiveChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Price", DbType="Money")]
+		public System.Nullable<decimal> Price
+		{
+			get
+			{
+				return this._Price;
+			}
+			set
+			{
+				if ((this._Price != value))
+				{
+					this.OnPriceChanging(value);
+					this.SendPropertyChanging();
+					this._Price = value;
+					this.SendPropertyChanged("Price");
+					this.OnPriceChanged();
 				}
 			}
 		}
@@ -5801,6 +5877,362 @@ namespace FoodExpress
 		{
 			this.SendPropertyChanging();
 			entity.WarehouseExport = null;
+		}
+	}
+	
+	public partial class sp_Import_GetAllImportByCustomerResult
+	{
+		
+		private int _IDImport;
+		
+		private string _Title;
+		
+		private System.Nullable<System.DateTime> _ImportDate;
+		
+		private System.Nullable<decimal> _TotalPrice;
+		
+		private System.Nullable<System.DateTime> _CreatedOn;
+		
+		private System.Nullable<int> _CreatedBy;
+		
+		private System.Nullable<bool> _Active;
+		
+		private string _NameCustomer;
+		
+		public sp_Import_GetAllImportByCustomerResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IDImport", DbType="Int NOT NULL")]
+		public int IDImport
+		{
+			get
+			{
+				return this._IDImport;
+			}
+			set
+			{
+				if ((this._IDImport != value))
+				{
+					this._IDImport = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Title", DbType="NVarChar(100)")]
+		public string Title
+		{
+			get
+			{
+				return this._Title;
+			}
+			set
+			{
+				if ((this._Title != value))
+				{
+					this._Title = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ImportDate", DbType="DateTime")]
+		public System.Nullable<System.DateTime> ImportDate
+		{
+			get
+			{
+				return this._ImportDate;
+			}
+			set
+			{
+				if ((this._ImportDate != value))
+				{
+					this._ImportDate = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TotalPrice", DbType="Money")]
+		public System.Nullable<decimal> TotalPrice
+		{
+			get
+			{
+				return this._TotalPrice;
+			}
+			set
+			{
+				if ((this._TotalPrice != value))
+				{
+					this._TotalPrice = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedOn", DbType="DateTime")]
+		public System.Nullable<System.DateTime> CreatedOn
+		{
+			get
+			{
+				return this._CreatedOn;
+			}
+			set
+			{
+				if ((this._CreatedOn != value))
+				{
+					this._CreatedOn = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedBy", DbType="Int")]
+		public System.Nullable<int> CreatedBy
+		{
+			get
+			{
+				return this._CreatedBy;
+			}
+			set
+			{
+				if ((this._CreatedBy != value))
+				{
+					this._CreatedBy = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Active", DbType="Bit")]
+		public System.Nullable<bool> Active
+		{
+			get
+			{
+				return this._Active;
+			}
+			set
+			{
+				if ((this._Active != value))
+				{
+					this._Active = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NameCustomer", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string NameCustomer
+		{
+			get
+			{
+				return this._NameCustomer;
+			}
+			set
+			{
+				if ((this._NameCustomer != value))
+				{
+					this._NameCustomer = value;
+				}
+			}
+		}
+	}
+	
+	public partial class sp_Import_CreateNewImportResult
+	{
+		
+		private System.Nullable<decimal> _IdImport;
+		
+		public sp_Import_CreateNewImportResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdImport", DbType="Decimal(38,0)")]
+		public System.Nullable<decimal> IdImport
+		{
+			get
+			{
+				return this._IdImport;
+			}
+			set
+			{
+				if ((this._IdImport != value))
+				{
+					this._IdImport = value;
+				}
+			}
+		}
+	}
+	
+	public partial class sp_Export_CreateNewExportResult
+	{
+		
+		private System.Nullable<decimal> _IdExport;
+		
+		public sp_Export_CreateNewExportResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdExport", DbType="Decimal(38,0)")]
+		public System.Nullable<decimal> IdExport
+		{
+			get
+			{
+				return this._IdExport;
+			}
+			set
+			{
+				if ((this._IdExport != value))
+				{
+					this._IdExport = value;
+				}
+			}
+		}
+	}
+	
+	public partial class sp_Export_GetAllExportByCustomerResult
+	{
+		
+		private int _IDExport;
+		
+		private string _Title;
+		
+		private System.Nullable<System.DateTime> _ExportDate;
+		
+		private System.Nullable<decimal> _TotalPrice;
+		
+		private System.Nullable<System.DateTime> _CreatedOn;
+		
+		private System.Nullable<int> _CreatedBy;
+		
+		private System.Nullable<bool> _Active;
+		
+		private string _NameCustomer;
+		
+		public sp_Export_GetAllExportByCustomerResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IDExport", DbType="Int NOT NULL")]
+		public int IDExport
+		{
+			get
+			{
+				return this._IDExport;
+			}
+			set
+			{
+				if ((this._IDExport != value))
+				{
+					this._IDExport = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Title", DbType="NVarChar(100)")]
+		public string Title
+		{
+			get
+			{
+				return this._Title;
+			}
+			set
+			{
+				if ((this._Title != value))
+				{
+					this._Title = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ExportDate", DbType="DateTime")]
+		public System.Nullable<System.DateTime> ExportDate
+		{
+			get
+			{
+				return this._ExportDate;
+			}
+			set
+			{
+				if ((this._ExportDate != value))
+				{
+					this._ExportDate = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TotalPrice", DbType="Money")]
+		public System.Nullable<decimal> TotalPrice
+		{
+			get
+			{
+				return this._TotalPrice;
+			}
+			set
+			{
+				if ((this._TotalPrice != value))
+				{
+					this._TotalPrice = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedOn", DbType="DateTime")]
+		public System.Nullable<System.DateTime> CreatedOn
+		{
+			get
+			{
+				return this._CreatedOn;
+			}
+			set
+			{
+				if ((this._CreatedOn != value))
+				{
+					this._CreatedOn = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedBy", DbType="Int")]
+		public System.Nullable<int> CreatedBy
+		{
+			get
+			{
+				return this._CreatedBy;
+			}
+			set
+			{
+				if ((this._CreatedBy != value))
+				{
+					this._CreatedBy = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Active", DbType="Bit")]
+		public System.Nullable<bool> Active
+		{
+			get
+			{
+				return this._Active;
+			}
+			set
+			{
+				if ((this._Active != value))
+				{
+					this._Active = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NameCustomer", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string NameCustomer
+		{
+			get
+			{
+				return this._NameCustomer;
+			}
+			set
+			{
+				if ((this._NameCustomer != value))
+				{
+					this._NameCustomer = value;
+				}
+			}
 		}
 	}
 }
